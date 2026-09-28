@@ -1050,7 +1050,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
           {/* Sort Dropdown */}
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'due_desc' | 'sales_desc' | 'orders_desc' | 'name')}
             aria-label="Sort clients by"
             className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#881337]"
           >

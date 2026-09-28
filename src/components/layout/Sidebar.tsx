@@ -110,7 +110,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
     <>
       {/* Mobile backdrop */}
       {isOpenMobile && (
-        <div
+        <button
+          type="button"
+          aria-label="Close navigation menu"
           className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
           onClick={onCloseMobile}
         />
@@ -126,9 +128,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-rose-600 to-rose-900 shadow-md shadow-rose-950/40">
             {/* Layered Paper Sheets Icon */}
             <div className="relative w-5 h-5">
-              <span className="absolute inset-0 block rounded-sm bg-rose-400/80 -rotate-6 transform origin-bottom-left" />
-              <span className="absolute inset-0 block rounded-sm bg-rose-200/90 rotate-3 transform origin-bottom-left" />
-              <span className="absolute inset-0 block rounded-sm bg-white shadow" />
+              <span className="printos-logo-sheet absolute inset-0 block rounded-sm bg-rose-400/80 -rotate-6 transform origin-bottom-left" />
+              <span className="printos-logo-sheet absolute inset-0 block rounded-sm bg-rose-200/90 rotate-3 transform origin-bottom-left" />
+              <span className="printos-logo-sheet absolute inset-0 block rounded-sm bg-white shadow" />
             </div>
           </div>
           <div>
@@ -144,7 +146,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
 
         {/* Scrollable Navigation */}
-        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-700">
+        <nav aria-label="Primary navigation" className="flex-1 overflow-y-auto px-3 py-4 space-y-6 scrollbar-thin scrollbar-thumb-slate-700">
           {sections.map((sec, idx) => (
             <div key={idx} className="space-y-1">
               {sec.title && (
@@ -163,6 +165,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                         onSelectTab(item.key);
                         onCloseMobile?.();
                       }}
+                      aria-current={isActive ? 'page' : undefined}
                       className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${
                         isActive
                           ? 'bg-[#881337] text-white shadow-sm font-semibold'
@@ -191,6 +194,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onSelectTab('settings');
                 onCloseMobile?.();
               }}
+              aria-current={activeTab === 'settings' ? 'page' : undefined}
               className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all ${
                 activeTab === 'settings'
                   ? 'bg-[#881337] text-white'
@@ -205,7 +209,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <span>Settings</span>
             </button>
           </div>
-        </div>
+        </nav>
 
         {/* Footer Area with User Profile & Location Tag */}
         <div className="p-3 border-t border-slate-800/80 bg-[#0c1322] space-y-2">

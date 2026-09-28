@@ -278,7 +278,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                 <label className="text-xs font-semibold text-slate-700">Payment Terms</label>
                 <select
                   value={paymentMethod}
-                  onChange={(e) => setPaymentMethod(e.target.value as any)}
+                  onChange={(e) => setPaymentMethod(e.target.value as 'Cash' | 'Credit (30 Days)' | 'bKash / Nagad' | 'Bank Cheque')}
                   className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
                 >
                   <option value="Cash">Cash on Delivery</option>

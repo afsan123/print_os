@@ -211,7 +211,7 @@ export const CashBookView: React.FC<CashBookViewProps> = ({
         <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Today's Cash Inflow
+              Today&apos;s Cash Inflow
             </span>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600">
               <ArrowDownLeft className="h-4 w-4" />
@@ -224,7 +224,7 @@ export const CashBookView: React.FC<CashBookViewProps> = ({
         <div className="rounded-2xl border border-slate-200/90 bg-white p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
-              Today's Cash Outflow
+              Today&apos;s Cash Outflow
             </span>
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-rose-700">
               <ArrowUpRight className="h-4 w-4" />

@@ -19,9 +19,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
   onDisburseSalary,
   onSuccessToast,
 }) => {
-  if (!isOpen || !staff) return null;
-
-  const dueAmount = staff.netPayable - staff.paidAmount;
+  const dueAmount = staff ? staff.netPayable - staff.paidAmount : 0;
 
   const [amount, setAmount] = useState<number>(dueAmount);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'bank' | 'bkash'>('cash');
@@ -29,6 +27,8 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
     new Date().toISOString().split('T')[0]
   );
   const [notes, setNotes] = useState<string>('');
+
+  if (!isOpen || !staff) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -144,7 +144,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
                 <button
                   key={m.id}
                   type="button"
-                  onClick={() => setPaymentMethod(m.id as any)}
+                  onClick={() => setPaymentMethod(m.id as 'cash' | 'bank' | 'bkash')}
                   className={`rounded-xl border py-2 text-xs font-bold transition-all ${
                     paymentMethod === m.id
                       ? 'border-purple-600 bg-purple-50 text-purple-900'

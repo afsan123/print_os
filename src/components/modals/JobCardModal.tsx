@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   X,
   Printer,
@@ -33,6 +33,11 @@ interface JobCardModalProps {
   onIssueChalan?: (state: EstimatorState, calc: CalculationResult, jobId: string) => void;
 }
 
+const createDraftId = (prefix: string, seed: string) => {
+  const hash = Array.from(seed).reduce((value, character) => ((value * 31) + character.charCodeAt(0)) >>> 0, 7);
+  return `${prefix}-${String(1000 + (hash % 9000))}`;
+};
+
 export const JobCardModal: React.FC<JobCardModalProps> = ({
   isOpen,
   onClose,
@@ -47,12 +52,6 @@ export const JobCardModal: React.FC<JobCardModalProps> = ({
   const [docType, setDocType] = useState<'job_card' | 'invoice'>('job_card');
   const [advancePaid, setAdvancePaid] = useState<number>(initialAdvance ?? 0);
 
-  useEffect(() => {
-    if (isOpen) {
-      setAdvancePaid(initialAdvance ?? 0);
-    }
-  }, [isOpen, initialAdvance]);
-
   if (!isOpen) return null;
 
   const handlePrint = () => {
@@ -60,8 +59,9 @@ export const JobCardModal: React.FC<JobCardModalProps> = ({
   };
 
   // Derive specs whether passed from Estimator or from an existing ProductionJob
-  const jobCardNumber = job?.id || `JC-2025-${Math.floor(1000 + Math.random() * 9000)}`;
-  const invoiceNumber = `INV-2025-${Math.floor(2000 + Math.random() * 8000)}`;
+  const draftSeed = `${state?.jobSpecs.client ?? ''}-${state?.jobSpecs.jobTitle ?? ''}-${state?.jobSpecs.targetQuantity ?? ''}`;
+  const jobCardNumber = job?.id || createDraftId('JC-2026', draftSeed);
+  const invoiceNumber = createDraftId('INV-2026', draftSeed);
   const currentDate = new Date().toLocaleDateString('en-GB', {
     day: '2-digit',
     month: 'short',

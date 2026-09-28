@@ -86,7 +86,7 @@ export const TopNav: React.FC<TopNavProps> = ({
         <div className="flex items-center gap-3 sm:gap-4 flex-1 max-w-xl">
           <button
             onClick={onToggleMobileSidebar}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors"
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white transition-colors lg:hidden"
             title="Toggle Navigation Menu"
             aria-label="Toggle menu"
           >

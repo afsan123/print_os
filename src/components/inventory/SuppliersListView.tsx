@@ -983,7 +983,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                     </label>
                     <select
                       value={billPaymentMethod}
-                      onChange={(e) => setBillPaymentMethod(e.target.value as any)}
+                      onChange={(e) => setBillPaymentMethod(e.target.value as 'Credit (30 Days)' | 'Cash' | 'bKash / Nagad' | 'Bank Cheque')}
                       className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-medium text-slate-900 dark:text-white"
                     >
                       <option value="Credit (30 Days)">Credit (30 Days)</option>
@@ -1300,7 +1300,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
           {/* Sort Dropdown */}
           <select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as any)}
+            onChange={(e) => setSortBy(e.target.value as 'due_desc' | 'purchases_desc' | 'rating' | 'name')}
             aria-label="Sort suppliers by"
             className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#881337]"
           >

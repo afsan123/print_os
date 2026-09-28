@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Search,
   Calculator,
@@ -10,8 +10,8 @@ import {
   Layers,
   Sparkles,
   ArrowRight,
-  X,
 } from 'lucide-react';
+import { type LucideIcon } from 'lucide-react';
 import { ClientRecord, PrintTemplate } from '@/types/estimator';
 import { NavItemKey } from '@/components/layout/Sidebar';
 
@@ -35,24 +35,23 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
   onNavigate,
 }) => {
   const [query, setQuery] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Keyboard shortcut listener for Ctrl+K
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        if (isOpen) {
-          onClose();
-        } else {
-          // Open handled by parent or state
-        }
-      } else if (e.key === 'Escape' && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         onClose();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
+
+  useEffect(() => {
+    if (isOpen) {
+      requestAnimationFrame(() => inputRef.current?.focus());
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -68,30 +67,47 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
       t.category.toLowerCase().includes(query.toLowerCase())
   );
 
-  const allNavItems: { key: NavItemKey; label: string; icon: any; section: string }[] = [
+  const allNavItems: { key: NavItemKey; label: string; icon: LucideIcon; section: string }[] = [
+    { key: 'dashboard', label: 'Dashboard', icon: Calculator, section: 'Overview' },
     { key: 'estimator', label: 'Smart Cost Estimator', icon: Calculator, section: 'Jobs & Production' },
     { key: 'job_cards', label: 'Job Cards & Dockets', icon: FileText, section: 'Jobs & Production' },
     { key: 'production_queue', label: 'Machine Production Queue', icon: Layers, section: 'Jobs & Production' },
     { key: 'invoices', label: 'Commercial Invoices', icon: Receipt, section: 'Sales' },
     { key: 'clients', label: 'Client Accounts Directory', icon: Users, section: 'Sales' },
+    { key: 'delivery_chalans', label: 'Delivery Chalans', icon: FileText, section: 'Sales' },
+    { key: 'suppliers', label: 'Suppliers', icon: Users, section: 'Purchases' },
+    { key: 'purchase_bills', label: 'Purchase Bills', icon: Receipt, section: 'Purchases' },
+    { key: 'cash_book', label: 'Cash Book', icon: Receipt, section: 'Finance' },
+    { key: 'transactions', label: 'Transactions Ledger', icon: Receipt, section: 'Finance' },
+    { key: 'expenses', label: 'Expenses', icon: Receipt, section: 'Finance' },
+    { key: 'payroll', label: 'Payroll', icon: Users, section: 'Finance' },
+    { key: 'profit_loss', label: 'Profit & Loss', icon: Receipt, section: 'Reports' },
+    { key: 'debtors', label: 'Debtors & Receivables', icon: Users, section: 'Reports' },
+    { key: 'sales_reports', label: 'Sales Reports', icon: Receipt, section: 'Reports' },
+    { key: 'settings', label: 'Settings', icon: Sparkles, section: 'System' },
   ];
   const navigationItems = allNavItems.filter((item) => item.label.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-20 p-4 backdrop-blur-xs">
-      <div className="relative w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-20 p-4 backdrop-blur-xs"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
+    >
+      <div role="dialog" aria-modal="true" aria-labelledby="command-palette-title" className="relative w-full max-w-xl rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
         {/* Search Input Bar */}
         <div className="flex items-center gap-3 border-b border-slate-200 px-4 py-3.5 bg-slate-50/50">
           <Search className="h-5 w-5 text-slate-400 shrink-0" />
           <input
-            autoFocus
+            ref={inputRef}
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a command, client name, or job template..."
-            className="w-full bg-transparent text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+            className="w-full bg-transparent text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 focus:outline-none"
           />
-          <kbd className="rounded border border-slate-200 bg-white px-2 py-0.5 text-[11px] font-mono text-slate-400 shadow-2xs">
+          <kbd className="rounded border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 px-2 py-0.5 text-[11px] font-mono text-slate-400 shadow-2xs">
             ESC
           </kbd>
         </div>
@@ -99,6 +115,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
         {/* Results Body */}
         <div className="max-h-96 overflow-y-auto p-3 space-y-4 text-xs">
           {/* Templates Section */}
+          <h2 id="command-palette-title" className="sr-only">Quick search</h2>
           {filteredTemplates.length > 0 && (
             <div>
               <div className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">

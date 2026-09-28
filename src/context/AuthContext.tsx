@@ -90,6 +90,17 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'print_os_auth_user';
 
+type AppwritePreferences = {
+  pressProfile?: PressProfile;
+  pressName?: string;
+  phone?: string;
+  role?: UserRole;
+  onboardingCompleted?: boolean;
+};
+
+const getErrorMessage = (error: unknown, fallback: string) =>
+  error instanceof Error ? error.message : fallback;
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -107,7 +118,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const appwriteUser = await account.get();
         if (isMounted && appwriteUser) {
           setIsAppwriteConnected(true);
-          const prefs = (appwriteUser.prefs as any) || {};
+          const prefs = (appwriteUser.prefs as AppwritePreferences) || {};
           const pressProfile: PressProfile = prefs.pressProfile || {
             ...DEFAULT_PRESS_PROFILE,
             pressName: prefs.pressName || `${appwriteUser.name}'s Press`,
@@ -130,7 +141,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setIsLoading(false);
           return;
         }
-      } catch (err) {
+      } catch {
         // Not logged in to Appwrite or offline
         // Fallback to local session if available
       }
@@ -173,13 +184,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     async (email: string, pass: string): Promise<{ success: boolean; error?: string }> => {
       setIsLoading(true);
       try {
-        // 1. Try Appwrite Login
         try {
           await account.createEmailPasswordSession(email, pass);
-          const appwriteUser = await account.get();
-          setIsAppwriteConnected(true);
+        } catch (sessionErr: unknown) {
+          const errMsg = sessionErr instanceof Error ? sessionErr.message : '';
+          if (errMsg.toLowerCase().includes('already active')) {
+            await account.deleteSession('current').catch(() => {});
+            await account.createEmailPasswordSession(email, pass);
+          } else {
+            throw sessionErr;
+          }
+        }
+        const appwriteUser = await account.get();
+        setIsAppwriteConnected(true);
 
-          const prefs = (appwriteUser.prefs as any) || {};
+        const prefs = (appwriteUser.prefs as AppwritePreferences) || {};
           const pressProfile: PressProfile = prefs.pressProfile || {
             ...DEFAULT_PRESS_PROFILE,
             pressName: prefs.pressName || `${appwriteUser.name}'s Press`,
@@ -197,48 +216,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             pressProfile,
           };
 
-          persistUser(loggedUser);
-          setIsLoading(false);
-          return { success: true };
-        } catch (appwriteErr: any) {
-          console.warn('Appwrite login failed, attempting local credentials match:', appwriteErr?.message);
-        }
-
-        // 2. Fallback local login for demo or test accounts
-        if (email.toLowerCase().includes('owner') || email.toLowerCase().includes('rafiq')) {
-          persistUser(DEMO_USERS.owner);
-          setIsLoading(false);
-          return { success: true };
-        } else if (email.toLowerCase().includes('manager')) {
-          persistUser(DEMO_USERS.manager);
-          setIsLoading(false);
-          return { success: true };
-        } else if (pass.length >= 6) {
-          // If valid password provided in offline/demo mode, authenticate locally
-          const localUser: AuthUser = {
-            id: `usr_local_${Date.now().toString(36)}`,
-            name: email.split('@')[0],
-            email,
-            role: 'owner',
-            pressProfile: {
-              ...DEFAULT_PRESS_PROFILE,
-              email,
-              ownerName: email.split('@')[0],
-              onboardingCompleted: true,
-            },
-          };
-          persistUser(localUser);
-          setIsLoading(false);
-          return { success: true };
-        }
-
+        persistUser(loggedUser);
         setIsLoading(false);
-        return { success: false, error: 'ভুল ইমেইল অথবা পাসওয়ার্ড। অনুগ্রহ করে আবার চেষ্টা করুন।' };
-      } catch (err: any) {
+        return { success: true };
+      } catch (err: unknown) {
         setIsLoading(false);
         return {
           success: false,
-          error: err?.message || 'লগইন প্রক্রিয়ায় সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+          error: getErrorMessage(err, 'লগইন প্রক্রিয়ায় সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।'),
         };
       }
     },
@@ -266,18 +251,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       };
 
       try {
-        // 1. Try Appwrite Registration
-        try {
-          const userId = ID.unique();
-          await account.create(userId, email, pass, name);
-          await account.createEmailPasswordSession(email, pass);
-          await account.updatePrefs({
-            pressName,
-            phone,
-            role: 'owner',
-            onboardingCompleted: false,
-            pressProfile: newProfile,
-          });
+        await account.deleteSession('current').catch(() => {});
+        const userId = ID.unique();
+        await account.create(userId, email, pass, name);
+        await account.createEmailPasswordSession(email, pass);
+        await account.updatePrefs({
+          pressName,
+          phone,
+          role: 'owner',
+          onboardingCompleted: false,
+          pressProfile: newProfile,
+        });
 
           const registeredUser: AuthUser = {
             id: userId,
@@ -288,32 +272,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             pressProfile: newProfile,
           };
 
-          persistUser(registeredUser);
-          setIsAppwriteConnected(true);
-          setIsLoading(false);
-          return { success: true };
-        } catch (appwriteErr: any) {
-          console.warn('Appwrite registration error, creating local user:', appwriteErr?.message);
-        }
-
-        // 2. Fallback Local Registration (Ensures user is never blocked)
-        const localUser: AuthUser = {
-          id: `usr_local_${Date.now().toString(36)}`,
-          name,
-          email,
-          phone,
-          role: 'owner',
-          pressProfile: newProfile,
-        };
-
-        persistUser(localUser);
+        persistUser(registeredUser);
+        setIsAppwriteConnected(true);
         setIsLoading(false);
         return { success: true };
-      } catch (err: any) {
+      } catch (err: unknown) {
         setIsLoading(false);
         return {
           success: false,
-          error: err?.message || 'রেজিস্ট্রেশন সম্পন্ন করা সম্ভব হয়নি। আবার চেষ্টা করুন।',
+          error: getErrorMessage(err, 'রেজিস্ট্রেশন সম্পন্ন করা সম্ভব হয়নি। আবার চেষ্টা করুন।'),
         };
       }
     },

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { Sidebar, NavItemKey } from '@/components/layout/Sidebar';
 import { TopNav } from '@/components/layout/TopNav';
@@ -44,16 +44,29 @@ import { usePayroll } from '@/hooks/usePayroll';
 import { INITIAL_CLIENTS } from '@/lib/constants';
 import { ClientRecord, PrintTemplate } from '@/types/estimator';
 import { ProductionJob } from '@/types/production';
-import { CheckCircle2, AlertCircle } from 'lucide-react';
+import { CheckCircle2, X } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { OnboardingWizard } from '@/components/auth/OnboardingWizard';
+import { appwriteService } from '@/lib/appwriteService';
 
 export default function PrintOSPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<NavItemKey>('estimator');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [clients, setClients] = useState<ClientRecord[]>(INITIAL_CLIENTS);
+
+  // Hydrate clients from Appwrite Cloud
+  useEffect(() => {
+    appwriteService.fetchClients().then((cloudClients) => {
+      if (cloudClients && cloudClients.length > 0) {
+        setClients((prev) => {
+          const ids = new Set(cloudClients.map((c) => c.id));
+          return [...cloudClients, ...prev.filter((p) => !ids.has(p.id))];
+        });
+      }
+    });
+  }, []);
 
   // Modals state
   const [jobCardModalOpen, setJobCardModalOpen] = useState(false);
@@ -67,11 +80,46 @@ export default function PrintOSPage() {
 
   // Toast Notification
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const showToast = (msg: string) => {
+  const showToast = useCallback((msg: string) => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     setToastMessage(msg);
-    setTimeout(() => setToastMessage(null), 3000);
-  };
+    toastTimeoutRef.current = setTimeout(() => setToastMessage(null), 4000);
+  }, []);
+
+  useEffect(() => () => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+  }, []);
+
+  const navigateTo = useCallback((tab: NavItemKey) => {
+    setActiveTab(tab);
+    setMobileSidebarOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    requestAnimationFrame(() => document.getElementById('main-content')?.focus({ preventScroll: true }));
+  }, []);
+
+  useEffect(() => {
+    const tabTitles: Record<NavItemKey, string> = {
+      dashboard: 'Dashboard', estimator: 'Smart Estimator', job_cards: 'Job Cards',
+      production_queue: 'Production Queue', invoices: 'Invoices', delivery_chalans: 'Delivery Chalans',
+      clients: 'Clients', suppliers: 'Suppliers', purchase_bills: 'Purchase Bills',
+      cash_book: 'Cash Book', transactions: 'Transactions', expenses: 'Expenses', payroll: 'Payroll',
+      profit_loss: 'Profit & Loss', debtors: 'Debtors', sales_reports: 'Sales Reports', settings: 'Settings',
+    };
+    document.title = `${tabTitles[activeTab]} | PrintOS`;
+  }, [activeTab]);
+
+  useEffect(() => {
+    const handleShortcut = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        setCommandPaletteOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleShortcut);
+    return () => window.removeEventListener('keydown', handleShortcut);
+  }, []);
 
   // Centralized Estimator Hook
   const {
@@ -133,6 +181,7 @@ export default function PrintOSPage() {
   const handleAddClient = (newClient: ClientRecord) => {
     setClients((prev) => [newClient, ...prev]);
     updateJobSpecs({ client: newClient.name });
+    appwriteService.saveClient(newClient).catch(() => {});
     showToast(`Client "${newClient.name}" added and selected.`);
   };
 
@@ -151,7 +200,7 @@ export default function PrintOSPage() {
 
   const handleStartJobForClient = (clientName: string) => {
     updateJobSpecs({ client: clientName });
-    setActiveTab('estimator');
+    navigateTo('estimator');
     showToast(`Smart Estimator opened for client "${clientName}"`);
   };
 
@@ -183,14 +232,22 @@ export default function PrintOSPage() {
       {toastMessage && (
         <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-xs font-semibold text-white shadow-xl animate-in fade-in slide-in-from-bottom-2">
           <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-          <span>{toastMessage}</span>
+          <span role="status" aria-live="polite">{toastMessage}</span>
+          <button
+            type="button"
+            onClick={() => setToastMessage(null)}
+            className="ml-1 rounded p-0.5 text-slate-400 transition-colors hover:bg-white/10 hover:text-white focus:outline-none"
+            aria-label="Dismiss notification"
+          >
+            <X className="h-3.5 w-3.5" />
+          </button>
         </div>
       )}
 
       {/* Left Navigation Sidebar */}
       <Sidebar
         activeTab={activeTab}
-        onSelectTab={(tab) => setActiveTab(tab)}
+        onSelectTab={navigateTo}
         isOpenMobile={mobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
       />
@@ -201,7 +258,7 @@ export default function PrintOSPage() {
         <TopNav
           onToggleMobileSidebar={() => setMobileSidebarOpen((prev) => !prev)}
           onOpenCommandPalette={() => setCommandPaletteOpen(true)}
-          onNavigateTab={(tab) => setActiveTab(tab as NavItemKey)}
+          onNavigateTab={(tab) => navigateTo(tab as NavItemKey)}
           breadcrumbSection={
             activeTab === 'estimator' || activeTab === 'job_cards' || activeTab === 'production_queue'
               ? 'Jobs & Estimates'
@@ -215,7 +272,7 @@ export default function PrintOSPage() {
         />
 
         {/* Canvas Body - Expansive layout utilizing widescreen space */}
-        <main className="flex-1 w-full max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 space-y-6">
+        <main id="main-content" tabIndex={-1} className="flex-1 w-full max-w-[1760px] mx-auto px-4 sm:px-6 lg:px-8 xl:px-10 py-6 space-y-6 focus:outline-none">
           {activeTab === 'estimator' ? (
             <>
               {/* Page Banner Header */}
@@ -251,7 +308,7 @@ export default function PrintOSPage() {
                 setJobCardModalOpen(true);
               }}
               onAdvanceStage={productionQueue.advanceStage}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'production_queue' ? (
             <ProductionQueueView
@@ -278,7 +335,7 @@ export default function PrintOSPage() {
               onAdvanceStage={productionQueue.advanceStage}
               onRollbackStage={productionQueue.rollbackStage}
               onMoveJobToStage={productionQueue.moveJobToStage}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'suppliers' ? (
             <SuppliersListView
@@ -287,7 +344,7 @@ export default function PrintOSPage() {
               onAddSupplier={procurement.addSupplier}
               onRecordPayment={procurement.recordBillPayment}
               onCreatePurchaseBill={procurement.createPurchaseBill}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'purchase_bills' ? (
             <PurchaseBillsView
@@ -296,14 +353,14 @@ export default function PrintOSPage() {
               onToggleInventory={procurement.toggleInventoryMode}
               stockItems={procurement.stockItems}
               onRecordPayment={procurement.recordBillPayment}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'invoices' ? (
             <InvoicesListView
               invoices={sales.invoices}
               onOpenPaymentModal={(inv) => sales.setActiveInvoiceForPayment(inv)}
               onOpenPrintModal={(inv) => sales.setActiveInvoiceForPayment(inv)}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'delivery_chalans' ? (
             <DeliveryChalansView
@@ -311,7 +368,7 @@ export default function PrintOSPage() {
               onOpenNewChalanModal={() => sales.setIsNewChalanModalOpen(true)}
               onOpenPrintModal={(chalan) => sales.setActiveChalanForPrint(chalan)}
               onUpdateStatus={sales.updateChalanStatus}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'debtors' ? (
             <DebtorsLedgerView
@@ -338,25 +395,25 @@ export default function PrintOSPage() {
               todayInflows={finance.todayInflows}
               todayOutflows={finance.todayOutflows}
               onOpenCashEntryModal={() => finance.setIsCashEntryModalOpen(true)}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'expenses' ? (
             <ExpensesView
               expenses={finance.expenses}
               onOpenLogExpenseModal={() => finance.setIsLogExpenseModalOpen(true)}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'sales_reports' ? (
             <SalesReportView
               invoices={sales.invoices}
               paymentRecords={sales.paymentRecords}
               onOpenPaymentModal={(inv) => sales.setActiveInvoiceForPayment(inv)}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'profit_loss' ? (
             <ProfitLossView
               metrics={finance.profitLossMetrics}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'payroll' ? (
             <PayrollView
@@ -364,7 +421,7 @@ export default function PrintOSPage() {
               metrics={payroll.metrics}
               onOpenPayModal={(m) => payroll.setActiveStaffForPay(m)}
               onOpenSlipModal={(m) => payroll.setActiveStaffForSlip(m)}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'settings' ? (
             <AppSettingsView
@@ -386,12 +443,12 @@ export default function PrintOSPage() {
                 sales.setActiveClientForStatement(clientName)
               }
               onStartJobForClient={handleStartJobForClient}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : (
             <ERPViews
               activeTab={activeTab}
-              onGoToEstimator={() => setActiveTab('estimator')}
+              onGoToEstimator={() => navigateTo('estimator')}
               clients={clients}
             />
           )}
@@ -400,6 +457,7 @@ export default function PrintOSPage() {
 
       {/* Modals */}
       <JobCardModal
+        key={`${activeJobForDocket?.id ?? state.jobSpecs.client}-${state.jobSpecs.jobTitle}-${advanceForDocket}`}
         isOpen={jobCardModalOpen}
         onClose={() => {
           setJobCardModalOpen(false);
@@ -412,7 +470,7 @@ export default function PrintOSPage() {
         onSendToProductionQueue={(st, cl) => {
           const newJob = productionQueue.addJobFromEstimator(st, cl);
           showToast(`Job "${newJob.jobTitle}" (${newJob.id}) scheduled in Pre-Press Queue!`);
-          setActiveTab('production_queue');
+          navigateTo('production_queue');
         }}
         onBuyPaperForJob={(st, cl, jId) => {
           procurement.openDirectPurchaseForJob(st, cl, jId);
@@ -435,7 +493,7 @@ export default function PrintOSPage() {
           });
           const dueMsg = newInv.dueAmount > 0 ? ` (Due: ৳${newInv.dueAmount.toLocaleString()})` : ' (Fully Paid)';
           showToast(`Commercial Sales Invoice ${newInv.id} created! Advance: ৳${finalAdvance.toLocaleString()}${dueMsg}`);
-          setActiveTab('invoices');
+          navigateTo('invoices');
         }}
       />
 
@@ -527,7 +585,7 @@ export default function PrintOSPage() {
           showToast(`Client "${cName}" selected.`);
         }}
         onSelectTemplate={handleSelectTemplate}
-        onNavigate={(tab) => setActiveTab(tab)}
+          onNavigate={navigateTo}
       />
 
       <PaySalaryModal

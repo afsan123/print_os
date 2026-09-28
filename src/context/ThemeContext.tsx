@@ -10,35 +10,32 @@ interface ThemeContextType {
   setTheme: (theme: Theme) => void;
 }
 
+function applyTheme(t: Theme) {
+  if (typeof document === 'undefined') return;
+  const root = document.documentElement;
+  if (t === 'dark') {
+    root.classList.add('dark');
+  } else {
+    root.classList.remove('dark');
+  }
+}
+
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>('light');
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    // 1. Read stored preference or system preference
     const stored = localStorage.getItem('print_os_theme') as Theme | null;
-    if (stored === 'dark' || stored === 'light') {
-      setThemeState(stored);
-      applyTheme(stored);
-    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      setThemeState('dark');
-      applyTheme('dark');
-    } else {
-      applyTheme('light');
-    }
-    setMounted(true);
+    const initial =
+      stored === 'dark' || stored === 'light'
+        ? stored
+        : window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    setThemeState(initial);
+    applyTheme(initial);
   }, []);
-
-  const applyTheme = (t: Theme) => {
-    const root = document.documentElement;
-    if (t === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  };
 
   const setTheme = (t: Theme) => {
     setThemeState(t);
@@ -61,7 +58,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 export const useTheme = (): ThemeContextType => {
   const context = useContext(ThemeContext);
   if (!context) {
-    // Return safe fallback if rendered outside provider
     return {
       theme: 'light',
       toggleTheme: () => {},

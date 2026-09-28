@@ -72,9 +72,10 @@ export async function checkAppwriteHealth(): Promise<AppwriteHealthResult> {
         databaseId,
         message: 'Successfully connected! Database and invoices collection are live.',
       };
-    } catch (dbErr: any) {
-      const errType = dbErr?.type || '';
-      const errMsg = dbErr?.message || '';
+    } catch (dbErr: unknown) {
+      const err = dbErr as { type?: string; message?: string; code?: number };
+      const errType = err?.type || '';
+      const errMsg = err?.message || '';
 
       if (errType === 'database_not_found') {
         return {
@@ -96,7 +97,7 @@ export async function checkAppwriteHealth(): Promise<AppwriteHealthResult> {
           databaseId,
           message: `Connected to Database "${databaseId}"! Collection "invoices" needs to be created in your Appwrite Console.`,
         };
-      } else if (errType === 'user_unauthorized' || dbErr?.code === 401) {
+      } else if (errType === 'user_unauthorized' || err?.code === 401) {
         return {
           connected: true,
           projectConnected: true,
