@@ -98,8 +98,41 @@ type AppwritePreferences = {
   onboardingCompleted?: boolean;
 };
 
-const getErrorMessage = (error: unknown, fallback: string) =>
-  error instanceof Error ? error.message : fallback;
+const getErrorMessage = (error: unknown, fallback: string): string => {
+  if (!error) return fallback;
+  const msg =
+    (error as { message?: string })?.message ||
+    (error instanceof Error ? error.message : '') ||
+    '';
+  const type = (error as { type?: string })?.type || '';
+  const code = (error as { code?: number })?.code || 0;
+
+  // Appwrite specific error types
+  if (type === 'user_invalid_credentials' || code === 401)
+    return 'ইমেইল বা পাসওয়ার্ড সঠিক নয়। আবার চেষ্টা করুন।';
+  if (type === 'user_not_found')
+    return 'এই ইমেইলে কোনো অ্যাকাউন্ট পাওয়া যায়নি। নতুন অ্যাকাউন্ট তৈরি করুন।';
+  if (type === 'user_already_exists' || code === 409)
+    return 'এই ইমেইলে ইতোমধ্যে একটি অ্যাকাউন্ট আছে। লগইন করুন।';
+  if (type === 'user_password_mismatch')
+    return 'পাসওয়ার্ড মিলছে না। আবার চেক করুন।';
+  if (type === 'user_email_not_whitelisted')
+    return 'এই ইমেইল ঠিকানাটি অনুমোদিত নয়।';
+  if (type === 'user_blocked')
+    return 'এই অ্যাকাউন্টটি সাময়িকভাবে ব্লক করা হয়েছে। সাপোর্টে যোগাযোগ করুন।';
+  if (type === 'rate_limit_exceeded' || code === 429)
+    return 'অনেক বেশি প্রচেষ্টা হয়েছে। কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।';
+  if (type === 'general_unauthorized' || msg.includes('missing scope'))
+    return 'সংযোগ সমস্যা হয়েছে। পেজ রিফ্রেশ করুন এবং আবার চেষ্টা করুন।';
+  if (msg.toLowerCase().includes('network') || msg.toLowerCase().includes('fetch'))
+    return 'ইন্টারনেট সংযোগ পরীক্ষা করুন এবং আবার চেষ্টা করুন।';
+  if (msg.includes('Invalid `password`') || msg.includes('password'))
+    return 'পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।';
+  if (msg.includes('Invalid document structure'))
+    return 'ডেটা সংরক্ষণে সমস্যা হয়েছে। আবার চেষ্টা করুন।';
+
+  return fallback;
+};
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);

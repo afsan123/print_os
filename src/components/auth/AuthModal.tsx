@@ -26,8 +26,8 @@ export const AuthModal: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
 
   // Login form state
-  const [loginEmail, setLoginEmail] = useState('owner@almadinapress.com');
-  const [loginPassword, setLoginPassword] = useState('123456');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState<string | null>(null);
 
   // Register form state
@@ -59,7 +59,7 @@ export const AuthModal: React.FC = () => {
       setRegError('অনুগ্রহ করে নাম, ইমেইল এবং পাসওয়ার্ড পূরণ করুন।');
       return;
     }
-    if (regPassword.length < 6) {
+    if (regPassword.length < 8) {
       setRegError('পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।');
       return;
     }
@@ -324,7 +324,7 @@ export const AuthModal: React.FC = () => {
                       type="password"
                       value={regPassword}
                       onChange={(e) => setRegPassword(e.target.value)}
-                      placeholder="কমপক্ষে ৬ অক্ষর"
+                      placeholder="কমপক্ষে ৮ অক্ষর"
                       required
                       className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 pl-9 pr-3 py-2 text-xs text-slate-900 dark:text-white focus:border-rose-600 focus:outline-none"
                     />
