@@ -57,4 +57,7 @@ export interface StockItem {
   averageUnitCost: number;
   minThresholdReams: number; // triggers low-stock badge
   lastRestocked: string;
+  brandOrMill?: string;      // e.g. "Bashundhara", "Partex", "Korean", "China"
+  rackLocation?: string;     // e.g. "Rack B-2", "Shelf 4"
+  notes?: string;            // custom remarks
 }

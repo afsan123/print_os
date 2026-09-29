@@ -59,13 +59,13 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
       <div className="relative w-full max-w-lg rounded-2xl bg-white dark:bg-[#111827] shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-rose-50/50 dark:bg-rose-950/20 px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-[#071A3D]/40 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#881337] text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1D5DFF] text-white">
               <UserPlus className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900 dark:text-white">
+              <h3 className="text-base font-bold text-slate-900 dark:text-white font-heading">
                 Add New Client (নতুন গ্রাহক যোগ)
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -86,7 +86,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                Contact Person / Name <span className="text-rose-600">*</span>
+                Contact Person / Name <span className="text-[#FF008C]">*</span>
               </label>
               <input
                 type="text"
@@ -94,7 +94,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="e.g. Rafiqul Islam / Marketing"
-                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
             </div>
 
@@ -107,7 +107,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
                 placeholder="e.g. Square Consumer Brands Ltd."
-                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
             </div>
           </div>
@@ -122,7 +122,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+880 1712-345678"
-                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
             </div>
 
@@ -135,7 +135,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="procurement@company.com"
-                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
             </div>
           </div>
@@ -149,7 +149,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               placeholder="e.g. 45 Motijheel C/A, Dhaka-1000"
-              className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+              className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
             />
           </div>
 
@@ -163,7 +163,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                 value={bin}
                 onChange={(e) => setBin(e.target.value)}
                 placeholder="001294821-0101"
-                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10 px-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
             </div>
 
@@ -181,7 +181,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   value={balance || ''}
                   onChange={(e) => setBalance(parseInt(e.target.value) || 0)}
                   placeholder="0"
-                  className="w-full h-10 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                  className="w-full h-10 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
                 />
               </div>
             </div>
@@ -201,7 +201,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
                   value={creditLimit || ''}
                   onChange={(e) => setCreditLimit(parseInt(e.target.value) || 0)}
                   placeholder="50000"
-                  className="w-full h-10 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                  className="w-full h-10 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-sm font-mono text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
                 />
               </div>
             </div>
@@ -218,7 +218,7 @@ export const NewClientModal: React.FC<NewClientModalProps> = ({
             </button>
             <button
               type="submit"
-              className="rounded-lg bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
+              className="rounded-lg bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
             >
               Save Client Account
             </button>

@@ -28,6 +28,8 @@ export const APPWRITE_CONFIG = {
     payments: 'payments',
     cashTransactions: 'cash_transactions',
     expenses: 'expenses',
+    godownStock: 'godown_stock',
+    notifications: 'notifications',
   },
 };
 

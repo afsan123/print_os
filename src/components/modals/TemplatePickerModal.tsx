@@ -48,11 +48,11 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/80 px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#881337] text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1D5DFF] text-white">
               <Sparkles className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">
+              <h3 className="text-base font-bold text-slate-900 font-heading">
                 Job Templates & Presets
               </h3>
               <p className="text-xs text-slate-500">
@@ -105,11 +105,11 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                     onSelectTemplate(tpl);
                     onClose();
                   }}
-                  className="group flex items-start justify-between p-4 rounded-xl border border-slate-200 hover:border-rose-300 hover:bg-rose-50/30 transition-all cursor-pointer shadow-2xs"
+                  className="group flex items-start justify-between p-4 rounded-xl border border-slate-200 hover:border-[#23A8FF]/60 hover:bg-[#F5F7FA] transition-all cursor-pointer shadow-2xs"
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-bold text-sm text-slate-900 group-hover:text-rose-900">
+                      <span className="font-bold text-sm text-slate-900 group-hover:text-[#1D5DFF] transition-colors">
                         {tpl.name}
                       </span>
                       <span className="rounded bg-slate-100 text-slate-600 px-2 py-0.5 text-[10px] font-semibold">
@@ -126,13 +126,13 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                       <span>•</span>
                       <span>{tpl.state.pressConfig.colors}</span>
                       <span>•</span>
-                      <span className="font-semibold text-rose-800">
+                      <span className="font-semibold text-[#1D5DFF]">
                         {tpl.state.profitMarginPercent}% Margin
                       </span>
                     </div>
                   </div>
 
-                  <button className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#881337] group-hover:text-white transition-colors">
+                  <button className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-600 group-hover:bg-[#1D5DFF] group-hover:text-white transition-colors">
                     <ArrowRight className="h-4 w-4" />
                   </button>
                 </div>
@@ -142,7 +142,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
             <form onSubmit={handleSave} className="space-y-4 max-w-md mx-auto py-2">
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-slate-700">
-                  Template Name <span className="text-rose-600">*</span>
+                  Template Name <span className="text-[#FF008C]">*</span>
                 </label>
                 <input
                   type="text"
@@ -150,7 +150,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                   value={templateName}
                   onChange={(e) => setTemplateName(e.target.value)}
                   placeholder="e.g. Standard 8-Page Booklet 170 GSM"
-                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                  className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
                 />
               </div>
 
@@ -163,7 +163,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                   value={templateDesc}
                   onChange={(e) => setTemplateDesc(e.target.value)}
                   placeholder="Briefly describe paper, finishing, and intended use case..."
-                  className="w-full p-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                  className="w-full p-3 rounded-lg border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
                 />
               </div>
 
@@ -178,7 +178,7 @@ export const TemplatePickerModal: React.FC<TemplatePickerModalProps> = ({
                 <button
                   type="submit"
                   disabled={savedSuccess}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
                 >
                   {savedSuccess ? (
                     <>

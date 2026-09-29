@@ -93,13 +93,13 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs overflow-y-auto">
       <div className="relative w-full max-w-xl rounded-2xl bg-white shadow-2xl border border-slate-200 overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-200 bg-[#0f172a] text-white px-6 py-4">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-[#071A3D] text-white px-6 py-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-rose-700 text-white">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#1D5DFF] text-white">
               <ShoppingCart className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold">Direct Paper Purchase Slip</h3>
+              <h3 className="text-base font-bold font-heading">Direct Paper Purchase Slip</h3>
               <p className="text-xs text-slate-400">
                 JIT Procurement • Buy paper directly for Job Card
               </p>
@@ -149,7 +149,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-500">Reams To Deliver:</span>
-                <span className="font-mono font-bold text-rose-900">
+                <span className="font-mono font-bold text-[#1D5DFF]">
                   {createdBill.reams} Reams ({createdBill.sheets} Sheets)
                 </span>
               </div>
@@ -178,7 +178,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                   setCreatedBill(null);
                   onClose();
                 }}
-                className="rounded-xl bg-[#881337] px-5 py-2 text-xs font-bold text-white hover:bg-[#700f2e] transition-colors"
+                className="rounded-xl bg-[#1D5DFF] px-5 py-2 text-xs font-bold text-white hover:bg-[#154cdb] transition-colors"
               >
                 Done
               </button>
@@ -188,12 +188,12 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
           /* Input Form */
           <form onSubmit={handleSubmit} className="p-6 space-y-4">
             {/* Linked Job Box */}
-            <div className="rounded-xl border border-rose-100 bg-rose-50/50 p-3.5 space-y-1 text-xs">
+            <div className="rounded-xl border border-blue-100 bg-blue-50/50 p-3.5 space-y-1 text-xs">
               <div className="flex justify-between items-center">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-rose-800">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#1D5DFF]">
                   Target Production Order
                 </span>
-                <span className="font-mono font-bold text-rose-950">{jobData.jobId}</span>
+                <span className="font-mono font-bold text-[#071A3D]">{jobData.jobId}</span>
               </div>
               <p className="font-bold text-slate-900 text-sm">{jobData.jobTitle}</p>
               <p className="text-slate-600">
@@ -204,12 +204,12 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
             {/* Select Supplier */}
             <div className="space-y-1.5">
               <label className="text-xs font-semibold text-slate-700">
-                Select Paper Supplier / Vendor <span className="text-rose-600">*</span>
+                Select Paper Supplier / Vendor <span className="text-[#FF008C]">*</span>
               </label>
               <select
                 value={selectedSupplierId}
                 onChange={(e) => setSelectedSupplierId(e.target.value)}
-                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
+                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF]"
               >
                 {suppliers.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -245,7 +245,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                   min="0.1"
                   value={reams}
                   onChange={(e) => setReams(parseFloat(e.target.value) || 0)}
-                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
+                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF]"
                 />
               </div>
 
@@ -259,7 +259,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                   min="100"
                   value={ratePerReam}
                   onChange={(e) => setRatePerReam(parseFloat(e.target.value) || 0)}
-                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
+                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono font-bold text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF]"
                 />
               </div>
             </div>
@@ -279,7 +279,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                 <select
                   value={paymentMethod}
                   onChange={(e) => setPaymentMethod(e.target.value as 'Cash' | 'Credit (30 Days)' | 'bKash / Nagad' | 'Bank Cheque')}
-                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
+                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF]"
                 >
                   <option value="Cash">Cash on Delivery</option>
                   <option value="Credit (30 Days)">Vendor Credit (30 Days)</option>
@@ -294,7 +294,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
                   type="number"
                   value={paidAmount}
                   onChange={(e) => setPaidAmount(parseFloat(e.target.value) || 0)}
-                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600"
+                  className="w-full h-10 px-3 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF]"
                 />
               </div>
             </div>
@@ -310,7 +310,7 @@ export const DirectPurchaseModal: React.FC<DirectPurchaseModalProps> = ({
               </button>
               <button
                 type="submit"
-                className="rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
+                className="rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2 text-xs font-bold transition-all shadow-xs"
               >
                 Confirm Purchase Bill
               </button>

@@ -64,11 +64,11 @@ export const LogExpenseModal: React.FC<LogExpenseModalProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-6 py-4">
           <div className="flex items-center gap-2">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#881337] text-white">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#1D5DFF] text-white">
               <TrendingDown className="h-4 w-4" />
             </span>
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">Log Factory & Operating Expense</h3>
+              <h3 className="font-bold text-slate-900 text-sm font-heading">Log Factory & Operating Expense</h3>
               <p className="text-xs text-slate-500">Record machine, utility, or operational costs</p>
             </div>
           </div>
@@ -123,7 +123,7 @@ export const LogExpenseModal: React.FC<LogExpenseModalProps> = ({
                 value={amount || ''}
                 onChange={(e) => setAmount(Number(e.target.value))}
                 placeholder="e.g. 12500"
-                className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-bold font-mono text-slate-900 focus:border-[#881337] focus:outline-none"
+                className="w-full rounded-xl border border-slate-200 bg-white p-2.5 font-bold font-mono text-slate-900 focus:border-[#1D5DFF] focus:outline-none"
                 required
               />
             </div>
@@ -156,7 +156,7 @@ export const LogExpenseModal: React.FC<LogExpenseModalProps> = ({
                   onClick={() => setPaymentMethod(m.key as ExpensePaymentMethod)}
                   className={`rounded-xl border py-2 text-center font-bold text-[11px] transition-all ${
                     paymentMethod === m.key
-                      ? 'border-[#881337] bg-rose-50 text-[#881337]'
+                      ? 'border-[#1D5DFF] bg-blue-50 text-[#1D5DFF]'
                       : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -205,7 +205,7 @@ export const LogExpenseModal: React.FC<LogExpenseModalProps> = ({
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-[#881337] px-5 py-2.5 font-bold text-white hover:bg-[#700f2e] transition-colors shadow-sm flex items-center gap-1.5"
+              className="rounded-xl bg-[#1D5DFF] px-5 py-2.5 font-bold text-white hover:bg-[#154cdb] transition-colors shadow-sm flex items-center gap-1.5"
             >
               <CheckCircle2 className="h-4 w-4" />
               <span>Record Expense</span>

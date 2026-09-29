@@ -95,21 +95,21 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Header & Summary Toolbar */}
-      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs">
+      <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4 rounded-2xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] p-5 sm:p-6 shadow-2xs">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#881337] text-white shadow-sm shadow-rose-950/20">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23A8FF] to-[#1D5DFF] text-white shadow-md shadow-[#1D5DFF]/25 ring-1 ring-white/20">
             <Layers className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
                 Production Floor Queue
               </h1>
-              <span className="rounded-full bg-rose-100 text-[#881337] px-2.5 py-0.5 text-xs font-bold font-mono">
+              <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900 text-[#1D5DFF] dark:text-[#23A8FF] px-2.5 py-0.5 text-xs font-bold font-mono">
                 {jobs.length} Active Jobs
               </span>
             </div>
-            <p className="mt-1 text-xs sm:text-sm text-slate-500 font-normal">
+            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-[#D8E3FF]/70 font-normal">
               7-stage commercial press Kanban tracking from CTP plates to delivery
             </p>
           </div>
@@ -117,10 +117,10 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
 
         {/* Quick KPI pills & Action Buttons */}
         <div className="flex flex-wrap items-center gap-3">
-          {/* Urgent Jobs Alert Pill */}
+          {/* Urgent Jobs Alert Pill (CMYK Magenta) */}
           {urgentCount > 0 && (
-            <div className="inline-flex items-center gap-1.5 rounded-xl bg-rose-50 border border-rose-200 px-3 py-2 text-xs font-bold text-rose-800">
-              <Flame className="h-4 w-4 text-rose-600 animate-bounce" />
+            <div className="inline-flex items-center gap-1.5 rounded-xl bg-[#FF008C]/10 border border-[#FF008C]/30 px-3 py-2 text-xs font-bold text-[#FF008C]">
+              <Flame className="h-4 w-4 text-[#FF008C] animate-bounce" />
               <span>{urgentCount} Urgent Orders</span>
             </div>
           )}
@@ -131,8 +131,8 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
             onClick={onToggleTelemetry}
             className={`inline-flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-xs font-semibold border transition-all ${
               showLiveTelemetry
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-300 shadow-2xs'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                ? 'bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800 shadow-2xs'
+                : 'bg-white dark:bg-[#071A3D] text-slate-600 dark:text-[#D8E3FF] border-[#E8EDF5] dark:border-[#162E63] hover:bg-[#F5F7FA]'
             }`}
             title="Optional: Toggle live impression counters and completion timers"
           >
@@ -144,10 +144,10 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
           <button
             type="button"
             onClick={onOpenBarcodeScanner}
-            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 px-3.5 py-2.5 text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-2 rounded-xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#071A3D] hover:bg-[#F5F7FA] dark:hover:bg-[#122A59] px-3.5 py-2.5 text-xs font-semibold text-slate-700 dark:text-[#D8E3FF] transition-colors shadow-2xs"
             title="Optional: Machine master quick barcode gun scanner"
           >
-            <Barcode className="h-4 w-4 text-slate-600" />
+            <Barcode className="h-4 w-4 text-slate-600 dark:text-slate-400" />
             <span>Barcode Scanner</span>
           </button>
 
@@ -155,9 +155,9 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
           <button
             type="button"
             onClick={() => setShowMachineWidget((prev) => !prev)}
-            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 px-3 py-2.5 text-xs font-semibold text-slate-700 transition-colors shadow-2xs"
+            className="inline-flex items-center gap-1.5 rounded-xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#071A3D] hover:bg-[#F5F7FA] dark:hover:bg-[#122A59] px-3 py-2.5 text-xs font-semibold text-slate-700 dark:text-[#D8E3FF] transition-colors shadow-2xs"
           >
-            <Printer className="h-4 w-4 text-slate-500" />
+            <Printer className="h-4 w-4 text-slate-500 dark:text-slate-400" />
             <span>Presses</span>
           </button>
 
@@ -165,7 +165,7 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
           <button
             onClick={onGoToEstimator}
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-4 py-2.5 text-xs font-bold transition-all shadow-sm hover:shadow-md hover:shadow-[#1D5DFF]/25 active:scale-[0.98]"
           >
             <Plus className="h-4 w-4" />
             <span>New Job Estimate</span>
@@ -365,6 +365,19 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
                                 Die
                               </span>
                             )}
+                            {job.hasBinding && (
+                              <span className="rounded bg-purple-50 text-purple-700 px-1.5 py-0.5">
+                                Bind
+                              </span>
+                            )}
+                            {job.hasCustomFinishing && (
+                              <span
+                                className="rounded bg-indigo-50 text-indigo-700 font-semibold px-1.5 py-0.5"
+                                title={job.customFinishingSummary}
+                              >
+                                ✨ Finish
+                              </span>
+                            )}
                           </div>
 
                           {/* Optional Telemetry Widget (When ON) */}
@@ -426,7 +439,7 @@ export const ProductionQueueView: React.FC<ProductionQueueViewProps> = ({
                               <button
                                 type="button"
                                 onClick={() => onAdvanceStage(job.id)}
-                                className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-[#881337] hover:bg-[#700f2e] text-white py-1.5 px-2.5 text-[11px] font-bold transition-all shadow-2xs hover:shadow-xs active:scale-[0.98]"
+                                className="w-full flex items-center justify-center gap-1.5 rounded-lg bg-[#1D5DFF] hover:bg-[#154cdb] text-white py-1.5 px-2.5 text-[11px] font-bold transition-all shadow-2xs hover:shadow-xs active:scale-[0.98]"
                                 title="Advance to next production stage"
                               >
                                 <span>{getNextStageLabel(job.currentStage)}</span>

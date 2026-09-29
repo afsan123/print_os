@@ -329,7 +329,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
           <button
             onClick={() => setSelectedSupplierId(null)}
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-[#881337] dark:hover:text-rose-400 transition-colors w-fit"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-[#1D5DFF] dark:hover:text-[#23A8FF] transition-colors w-fit"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>← Back to All Suppliers (সকল সাপ্লায়ার তালিকায় ফিরুন)</span>
@@ -431,7 +431,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <button
                 onClick={() => setIsNewBillModalOpen(true)}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-4 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-4 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs"
               >
                 <Plus className="h-4 w-4" />
                 <span>New Purchase Bill (কাগজ ক্রয়)</span>
@@ -540,7 +540,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
               onClick={() => setActiveHistoryTab('bills')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'bills'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -555,7 +555,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
               onClick={() => setActiveHistoryTab('payments')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'payments'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -567,7 +567,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
               onClick={() => setActiveHistoryTab('materials')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'materials'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -579,7 +579,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
               onClick={() => setActiveHistoryTab('ledger')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'ledger'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -602,7 +602,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                   </p>
                   <button
                     onClick={() => setIsNewBillModalOpen(true)}
-                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#881337] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#700f2e]"
+                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#154cdb]"
                   >
                     Add Purchase Bill
                   </button>
@@ -792,7 +792,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                       key={idx}
                       className="rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-2 text-xs font-medium text-slate-800 dark:text-slate-200 flex items-center gap-2"
                     >
-                      <Package className="h-4 w-4 text-[#881337]" />
+                      <Package className="h-4 w-4 text-[#1D5DFF]" />
                       <span>{spec}</span>
                     </div>
                   ))}
@@ -1036,7 +1036,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                   </button>
                   <button
                     type="submit"
-                    className="rounded-lg bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2 text-xs font-bold shadow-xs"
+                    className="rounded-lg bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2 text-xs font-bold shadow-xs"
                   >
                     Create Purchase Bill
                   </button>
@@ -1138,12 +1138,12 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
       {/* Top Banner Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 sm:p-6 lg:px-7 shadow-xs">
         <div className="flex items-center gap-4 sm:gap-5">
-          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#881337] text-white shadow-sm shadow-rose-950/20">
+          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#1D5DFF] text-white shadow-sm shadow-[#1D5DFF]/20">
             <Building2 className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
                 Paper Suppliers & Mills (কাগজের মহাজন ও মিল)
               </h1>
               <span className="rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs px-2.5 py-0.5">
@@ -1160,7 +1160,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs hover:shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs hover:shadow-sm"
           >
             <Plus className="h-4 w-4" />
             <span>Add Supplier (নতুন সাপ্লায়ার)</span>
@@ -1257,7 +1257,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search suppliers by name, mill, phone, area..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#881337] shadow-2xs"
+            className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D5DFF] shadow-2xs"
           />
         </div>
 
@@ -1302,7 +1302,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'due_desc' | 'purchases_desc' | 'rating' | 'name')}
             aria-label="Sort suppliers by"
-            className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#881337]"
+            className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#1D5DFF]"
           >
             <option value="due_desc">Sort: Highest Payable Due</option>
             <option value="purchases_desc">Sort: Highest Purchases</option>
@@ -1324,7 +1324,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
           </p>
           <button
             onClick={() => setIsAddModalOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#881337] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#700f2e]"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#154cdb]"
           >
             <Plus className="h-4 w-4" />
             <span>Add Supplier</span>
@@ -1335,7 +1335,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
           {processedSuppliers.map((supplier) => (
             <div
               key={supplier.id}
-              className="group rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 shadow-xs hover:border-[#881337]/50 dark:hover:border-rose-500/50 hover:shadow-md transition-all flex flex-col justify-between"
+              className="group rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 shadow-xs hover:border-[#1D5DFF]/50 dark:hover:border-[#23A8FF]/50 hover:shadow-md transition-all flex flex-col justify-between"
             >
               <div>
                 {/* Top Bar: Avatar & Rating/Due Badge */}
@@ -1351,7 +1351,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                     <div>
                       <h4
                         onClick={() => setSelectedSupplierId(supplier.id)}
-                        className="font-bold text-slate-900 dark:text-white text-sm hover:text-[#881337] dark:hover:text-rose-400 cursor-pointer transition-colors line-clamp-1"
+                        className="font-bold text-slate-900 dark:text-white text-sm hover:text-[#1D5DFF] dark:hover:text-[#23A8FF] cursor-pointer transition-colors line-clamp-1"
                         title="Click to view supplier history"
                       >
                         {supplier.name}
@@ -1444,7 +1444,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
               <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
                 <button
                   onClick={() => setSelectedSupplierId(supplier.id)}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 hover:bg-[#881337] dark:hover:bg-rose-900 text-white px-3 py-1.5 text-xs font-bold transition-all shadow-2xs flex-1 justify-center"
+                  className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 hover:bg-[#1D5DFF] dark:hover:bg-[#1D5DFF] text-white px-3 py-1.5 text-xs font-bold transition-all shadow-2xs flex-1 justify-center"
                 >
                   <span>View History (হিস্ট্রি)</span>
                   <ArrowUpRight className="h-3.5 w-3.5" />
@@ -1628,7 +1628,7 @@ export const SuppliersListView: React.FC<SuppliersListViewProps> = ({
                 </button>
                 <button
                   type="submit"
-                  className="rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2 text-xs font-bold shadow-xs"
+                  className="rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2 text-xs font-bold shadow-xs"
                 >
                   Save Supplier
                 </button>

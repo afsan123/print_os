@@ -138,12 +138,12 @@ export const SalesReportView: React.FC<SalesReportViewProps> = ({
       {/* Top Banner Header */}
       <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 sm:p-6 lg:px-7 shadow-xs">
         <div className="flex items-center gap-4 sm:gap-5">
-          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#881337] text-white shadow-sm shadow-rose-950/20">
+          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#1D5DFF] text-white shadow-sm shadow-[#1D5DFF]/20">
             <BarChart3 className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-heading">
                 Commercial Press Sales Reports (বিক্রয় ও আদায় রিপোর্ট)
               </h1>
               <span className="rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs px-2.5 py-0.5">
@@ -419,7 +419,7 @@ export const SalesReportView: React.FC<SalesReportViewProps> = ({
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search invoices by client, job title, or ID..."
-              className="w-full h-9.5 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#881337]"
+              className="w-full h-9.5 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D5DFF]"
             />
           </div>
 

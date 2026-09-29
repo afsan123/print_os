@@ -17,12 +17,14 @@ interface ProcurementDashboardProps {
   isInventoryEnabled: boolean;
   onToggleInventory: () => void;
   stockItems: StockItem[];
+  onNavigateToInventory?: () => void;
 }
 
 export const ProcurementDashboard: React.FC<ProcurementDashboardProps> = ({
   isInventoryEnabled,
   onToggleInventory,
   stockItems,
+  onNavigateToInventory,
 }) => {
   if (!isInventoryEnabled) {
     return (
@@ -73,12 +75,25 @@ export const ProcurementDashboard: React.FC<ProcurementDashboardProps> = ({
           </div>
         </div>
 
-        {lowStockCount > 0 && (
-          <div className="inline-flex items-center gap-1.5 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-800">
-            <AlertTriangle className="h-4 w-4 text-amber-600" />
-            <span>{lowStockCount} Items Low Stock</span>
-          </div>
-        )}
+        <div className="flex items-center gap-2.5">
+          {onNavigateToInventory && (
+            <button
+              type="button"
+              onClick={onNavigateToInventory}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-3 py-1.5 text-xs font-bold transition-all shadow-2xs active:scale-[0.98]"
+            >
+              <Package className="h-3.5 w-3.5" />
+              <span>Manage Godown Stock (গুদাম দেখুন ➔)</span>
+            </button>
+          )}
+
+          {lowStockCount > 0 && (
+            <div className="inline-flex items-center gap-1.5 rounded-xl bg-amber-50 border border-amber-200 px-3 py-1.5 text-xs font-bold text-amber-800">
+              <AlertTriangle className="h-4 w-4 text-amber-600" />
+              <span>{lowStockCount} Items Low Stock</span>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Stock Cards Grid */}

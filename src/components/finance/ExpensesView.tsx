@@ -79,15 +79,15 @@ export const ExpensesView: React.FC<ExpensesViewProps> = ({
       {/* Header */}
       <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-7 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-center gap-3.5">
-          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-rose-700 to-slate-900 text-white shadow-sm">
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#1D5DFF] text-white shadow-sm shadow-[#1D5DFF]/20">
             <TrendingDown className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-xl font-bold text-slate-900 tracking-tight">
+              <h1 className="text-xl font-bold text-slate-900 tracking-tight font-heading">
                 Factory & Operational Expenses (কারখানা খরচ)
               </h1>
-              <span className="rounded-full bg-rose-50 border border-rose-200 px-2.5 py-0.5 text-xs font-bold text-[#881337]">
+              <span className="rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-xs font-bold text-[#1D5DFF]">
                 {expenses.length} Records
               </span>
             </div>
@@ -99,7 +99,7 @@ export const ExpensesView: React.FC<ExpensesViewProps> = ({
 
         <button
           onClick={onOpenLogExpenseModal}
-          className="inline-flex items-center gap-2 rounded-xl bg-[#881337] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#700f2e] transition-colors shadow-sm self-start md:self-auto"
+          className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#154cdb] transition-colors shadow-sm self-start md:self-auto"
         >
           <Plus className="h-4 w-4" />
           <span>Log Factory Expense</span>
@@ -113,7 +113,7 @@ export const ExpensesView: React.FC<ExpensesViewProps> = ({
             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
               Total Factory Spend
             </span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-50 text-[#881337]">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-50 text-[#1D5DFF]">
               <TrendingDown className="h-4 w-4" />
             </span>
           </div>
@@ -170,7 +170,7 @@ export const ExpensesView: React.FC<ExpensesViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search expense, vendor, receipt..."
-            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#881337] focus:outline-none transition-colors"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/50 py-2.5 pl-10 pr-4 text-xs font-medium text-slate-800 placeholder-slate-400 focus:bg-white focus:border-[#1D5DFF] focus:outline-none transition-colors"
           />
         </div>
 
@@ -189,7 +189,7 @@ export const ExpensesView: React.FC<ExpensesViewProps> = ({
               onClick={() => setCategoryFilter(cat.key)}
               className={`rounded-xl px-3.5 py-2 text-xs font-bold transition-colors whitespace-nowrap ${
                 categoryFilter === cat.key
-                  ? 'bg-[#881337] text-white shadow-xs'
+                  ? 'bg-[#1D5DFF] text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:bg-slate-200/70'
               }`}
             >

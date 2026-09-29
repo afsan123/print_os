@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Printer,
   Building2,
@@ -83,9 +84,9 @@ const FEATURES = [
   {
     icon: Package,
     color: 'bg-amber-100 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400',
-    title: 'সাপ্লায়ার ও কাঁচামাল',
-    titleEn: 'Supplier & Inventory',
-    desc: 'কাগজ ও উপকরণ কেনার বিল, সাপ্লায়ার লেজার, গোডাউন স্টক সব ট্র্যাক করুন।',
+    title: 'সাপ্লায়ার ও কাগজ ক্রয় (ঐচ্ছিক ইনভেন্টরি)',
+    titleEn: 'Suppliers & Purchases (Optional Stock)',
+    desc: 'কাজের জন্য সরাসরি কাগজ ক্রয়ের হিসাব ও সাপ্লায়ার লেজার। ছোট প্রেসের জন্য গুদাম স্টক রাখা ঐচ্ছিক।',
   },
   {
     icon: DollarSign,
@@ -145,7 +146,7 @@ export const OnboardingWizard: React.FC = () => {
           particleCount: 120,
           spread: 80,
           origin: { y: 0.55 },
-          colors: ['#881337', '#059669', '#2563eb', '#f59e0b', '#8b5cf6'],
+          colors: ['#1D5DFF', '#23A8FF', '#FF008C', '#FFD400', '#00C8FF', '#10B981'],
         });
       } catch { /* graceful fallback */ }
     }
@@ -195,18 +196,25 @@ export const OnboardingWizard: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
-      <div className="w-full max-w-3xl rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden my-4 sm:my-6">
+      <div className="w-full max-w-3xl rounded-3xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] shadow-2xl overflow-hidden my-4 sm:my-6">
 
-        {/* Wizard Header */}
-        <div className="bg-gradient-to-r from-slate-900 via-[#881337] to-slate-900 p-5 sm:p-7 text-white">
+        {/* Wizard Header - Primary Brand Gradient */}
+        <div style={{ background: 'linear-gradient(135deg, #23A8FF 0%, #1D5DFF 50%, #071A3D 100%)' }} className="p-5 sm:p-7 text-white">
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10 border border-white/20">
-              <Printer className="h-5 w-5 text-rose-300" />
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 border border-white/30 backdrop-blur-sm p-1.5">
+              <Image
+                src="/logo-icon.png"
+                alt="PrintOS"
+                width={36}
+                height={36}
+                priority
+                className="h-full w-full object-contain"
+              />
             </div>
             <div>
               <h2 className="text-lg font-black tracking-tight text-white flex items-center gap-2">
                 PrintOS সেটআপ উইজার্ড
-                <span className="text-[10px] uppercase bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">
+                <span className="text-[10px] uppercase bg-white/20 text-white px-2 py-0.5 rounded-full font-bold">
                   Step {step} of 5
                 </span>
               </h2>
@@ -588,7 +596,7 @@ export const OnboardingWizard: React.FC = () => {
                 type="button"
                 onClick={() => setStep((prev) => (prev + 1) as Step)}
                 disabled={step === 1 && !pressName.trim()}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-[#881337] hover:bg-[#9f1239] text-white px-5 py-2.5 text-xs font-bold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2.5 text-xs font-bold shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
               >
                 <span>{step === 4 ? 'ড্যাশবোর্ডে যান' : 'পরবর্তী ধাপ'}</span>
                 <ArrowRight className="h-4 w-4" />

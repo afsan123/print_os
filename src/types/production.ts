@@ -38,11 +38,15 @@ export interface ProductionJob {
   paperSpec: string;
   colors: string;
   platesCount: number;
+  printBill?: number;
   hasLamination: boolean;
   laminationType?: string;
   hasDieCutting: boolean;
   hasBinding: boolean;
   bindingType?: string;
+  hasCustomFinishing?: boolean;
+  customFinishingSummary?: string;
+  customFinishingsJson?: string;
   notes?: string;
 
   // Optional telemetry & timestamps

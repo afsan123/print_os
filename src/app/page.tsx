@@ -16,6 +16,7 @@ import { ProductionQueueView } from '@/components/production/ProductionQueueView
 import { JobCardsView } from '@/components/production/JobCardsView';
 import { SuppliersListView } from '@/components/inventory/SuppliersListView';
 import { PurchaseBillsView } from '@/components/inventory/PurchaseBillsView';
+import { GodownInventoryView } from '@/components/inventory/GodownInventoryView';
 import { DirectPurchaseModal } from '@/components/inventory/DirectPurchaseModal';
 import { InvoicesListView } from '@/components/sales/InvoicesListView';
 import { SalesReportView } from '@/components/sales/SalesReportView';
@@ -35,6 +36,9 @@ import { LogExpenseModal } from '@/components/finance/LogExpenseModal';
 import { PayrollView } from '@/components/payroll/PayrollView';
 import { PaySalaryModal } from '@/components/payroll/PaySalaryModal';
 import { PaySlipModal } from '@/components/payroll/PaySlipModal';
+import { AddEditStaffModal } from '@/components/payroll/AddEditStaffModal';
+import { DeleteStaffModal } from '@/components/payroll/DeleteStaffModal';
+import { StaffMember } from '@/types/payroll';
 import { usePrintEstimator } from '@/hooks/usePrintEstimator';
 import { useProductionQueue } from '@/hooks/useProductionQueue';
 import { useInventoryProcurement } from '@/hooks/useInventoryProcurement';
@@ -46,12 +50,14 @@ import { ClientRecord, PrintTemplate } from '@/types/estimator';
 import { ProductionJob } from '@/types/production';
 import { CheckCircle2, X } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useNotifications } from '@/context/NotificationContext';
 import { AuthModal } from '@/components/auth/AuthModal';
 import { OnboardingWizard } from '@/components/auth/OnboardingWizard';
 import { appwriteService } from '@/lib/appwriteService';
 
 export default function PrintOSPage() {
   const { user, isAuthenticated, isLoading } = useAuth();
+  const { addNotification } = useNotifications();
   const [activeTab, setActiveTab] = useState<NavItemKey>('estimator');
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [clients, setClients] = useState<ClientRecord[]>(INITIAL_CLIENTS);
@@ -104,6 +110,7 @@ export default function PrintOSPage() {
       dashboard: 'Dashboard', estimator: 'Smart Estimator', job_cards: 'Job Cards',
       production_queue: 'Production Queue', invoices: 'Invoices', delivery_chalans: 'Delivery Chalans',
       clients: 'Clients', suppliers: 'Suppliers', purchase_bills: 'Purchase Bills',
+      inventory: 'Godown Paper Stock',
       cash_book: 'Cash Book', transactions: 'Transactions', expenses: 'Expenses', payroll: 'Payroll',
       profit_loss: 'Profit & Loss', debtors: 'Debtors', sales_reports: 'Sales Reports', settings: 'Settings',
     };
@@ -183,19 +190,36 @@ export default function PrintOSPage() {
     updateJobSpecs({ client: newClient.name });
     appwriteService.saveClient(newClient).catch(() => {});
     showToast(`Client "${newClient.name}" added and selected.`);
+    addNotification({
+      title: 'New Client Onboarded',
+      message: `Client "${newClient.name}" (${newClient.company || 'Dhaka'}) added to CRM directory.`,
+      category: 'finance',
+      priority: 'low',
+      targetTab: 'clients',
+      actionText: 'View Client',
+      entityId: newClient.id,
+    });
   };
 
   const handleCreateInvoiceAndJobCard = (customAdvance?: number) => {
     setActiveJobForDocket(undefined);
     setAdvanceForDocket(typeof customAdvance === 'number' ? customAdvance : 0);
-    // Trigger confetti celebration!
+    // Trigger confetti celebration with PrintOS brand & CMYK colors!
     confetti({
-      particleCount: 80,
-      spread: 70,
+      particleCount: 90,
+      spread: 75,
       origin: { y: 0.6 },
-      colors: ['#881337', '#059669', '#2563eb', '#d97706'],
+      colors: ['#1D5DFF', '#23A8FF', '#FF008C', '#FFD400', '#00C8FF', '#10B981'],
     });
     setJobCardModalOpen(true);
+    addNotification({
+      title: 'Job Docket Generated',
+      message: `Job Card created for "${state.jobSpecs.jobTitle}" (${state.jobSpecs.client}) • Qty: ${state.jobSpecs.targetQuantity.toLocaleString()} pcs`,
+      category: 'production',
+      priority: 'normal',
+      targetTab: 'job_cards',
+      actionText: 'View Job Card',
+    });
   };
 
   const handleStartJobForClient = (clientName: string) => {
@@ -207,14 +231,21 @@ export default function PrintOSPage() {
   // Auth Loading State
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[#0f172a] text-white">
+      <div className="flex min-h-screen items-center justify-center bg-[#071A3D] text-white">
         <div className="flex flex-col items-center gap-4">
-          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-[#881337] shadow-xl animate-pulse">
-            <span className="text-xl font-black">OS</span>
+          <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23A8FF] via-[#1D5DFF] to-[#071A3D] shadow-xl shadow-[#071A3D]/70 animate-pulse ring-1 ring-white/20">
+            <div className="relative w-6 h-6">
+              <span className="absolute inset-0 block rounded-sm bg-[#00C8FF] -rotate-12 opacity-95" />
+              <span className="absolute inset-0 block rounded-sm bg-[#FF008C] -rotate-6 opacity-95" />
+              <span className="absolute inset-0 block rounded-sm bg-[#FFD400] rotate-3 opacity-95" />
+              <span className="absolute inset-0 block rounded-sm bg-white shadow-sm flex items-center justify-center">
+                <span className="w-2 h-2 rounded-full bg-[#1D5DFF]" />
+              </span>
+            </div>
           </div>
           <div className="space-y-1 text-center">
-            <h2 className="text-sm font-bold text-slate-200">PrintOS ক্লাউড ইআরপি লোড হচ্ছে...</h2>
-            <p className="text-xs text-slate-500 font-mono">Verifying Session & Appwrite Backend</p>
+            <h2 className="text-sm font-bold text-[#D8E3FF]">PrintOS ক্লাউড ইআরপি লোড হচ্ছে...</h2>
+            <p className="text-xs text-[#23A8FF] font-mono">Verifying Session & Secure Cloud Services</p>
           </div>
         </div>
       </div>
@@ -227,7 +258,7 @@ export default function PrintOSPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc] dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200">
+    <div className="flex min-h-screen bg-[#F5F7FA] dark:bg-[#071A3D] text-slate-900 dark:text-slate-100 transition-colors duration-200">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-xl bg-slate-900 border border-slate-700 px-4 py-3 text-xs font-semibold text-white shadow-xl animate-in fade-in slide-in-from-bottom-2">
@@ -250,6 +281,7 @@ export default function PrintOSPage() {
         onSelectTab={navigateTo}
         isOpenMobile={mobileSidebarOpen}
         onCloseMobile={() => setMobileSidebarOpen(false)}
+        isInventoryEnabled={procurement.isInventoryEnabled}
       />
 
       {/* Main Content Area */}
@@ -354,6 +386,43 @@ export default function PrintOSPage() {
               stockItems={procurement.stockItems}
               onRecordPayment={procurement.recordBillPayment}
               onGoToEstimator={() => navigateTo('estimator')}
+              onNavigateToInventory={() => navigateTo('inventory')}
+            />
+          ) : activeTab === 'inventory' ? (
+            <GodownInventoryView
+              stockItems={procurement.stockItems}
+              isInventoryEnabled={procurement.isInventoryEnabled}
+              onToggleInventory={procurement.toggleInventoryMode}
+              onAddStock={(item) => {
+                procurement.addStockItem(item);
+                showToast(`Paper "${item.paperType}" added to inventory.`);
+                addNotification({
+                  title: 'Paper Stock Added',
+                  message: `${item.reamsAvailable} reams of ${item.paperType} (${item.fullSheetSize}) added to ${item.godownName}`,
+                  category: 'inventory',
+                  priority: 'normal',
+                  targetTab: 'inventory',
+                  actionText: 'Manage Stock',
+                  entityId: item.godownId,
+                });
+              }}
+              onAdjustStock={(stockId, type, reams, sheets, reason) => {
+                procurement.adjustStock(stockId, type, reams, sheets, reason);
+                showToast(`Stock ${type === 'in' ? 'received (+)' : 'issued (-)'} successfully.`);
+                addNotification({
+                  title: type === 'in' ? 'Stock Intake Recorded' : 'Stock Issued to Press',
+                  message: `${reams} reams ${sheets > 0 ? `${sheets} sheets` : ''} (${reason})`,
+                  category: 'inventory',
+                  priority: 'normal',
+                  targetTab: 'inventory',
+                  actionText: 'Check Godown',
+                });
+              }}
+              onDeleteStock={(stockId) => {
+                procurement.deleteStockItem(stockId);
+                showToast('Paper stock item removed.');
+              }}
+              onNavigateToPurchaseBills={() => navigateTo('purchase_bills')}
             />
           ) : activeTab === 'invoices' ? (
             <InvoicesListView
@@ -421,14 +490,26 @@ export default function PrintOSPage() {
               metrics={payroll.metrics}
               onOpenPayModal={(m) => payroll.setActiveStaffForPay(m)}
               onOpenSlipModal={(m) => payroll.setActiveStaffForSlip(m)}
+              onOpenAddStaffModal={() => {
+                payroll.setStaffToEdit(null);
+                payroll.setIsAddStaffModalOpen(true);
+              }}
+              onEditStaff={(m) => {
+                payroll.setStaffToEdit(m);
+                payroll.setIsAddStaffModalOpen(true);
+              }}
+              onRequestDeleteStaff={(m) => payroll.setStaffToDelete(m)}
               onGoToEstimator={() => navigateTo('estimator')}
             />
           ) : activeTab === 'settings' ? (
             <AppSettingsView
               appwriteStatus={sales.appwriteStatus}
               onRefreshConnection={() =>
-                showToast('Appwrite Cloud connection re-checked.')
+                showToast('ক্লাউড সিঙ্ক্রোনাইজেশন যাচাই সম্পন্ন হয়েছে।')
               }
+              isInventoryEnabled={procurement.isInventoryEnabled}
+              onToggleInventory={procurement.toggleInventoryMode}
+              onNavigateToInventory={() => navigateTo('inventory')}
             />
           ) : activeTab === 'clients' ? (
             <ClientsView
@@ -450,6 +531,7 @@ export default function PrintOSPage() {
               activeTab={activeTab}
               onGoToEstimator={() => navigateTo('estimator')}
               clients={clients}
+              isInventoryEnabled={procurement.isInventoryEnabled}
             />
           )}
         </main>
@@ -470,6 +552,15 @@ export default function PrintOSPage() {
         onSendToProductionQueue={(st, cl) => {
           const newJob = productionQueue.addJobFromEstimator(st, cl);
           showToast(`Job "${newJob.jobTitle}" (${newJob.id}) scheduled in Pre-Press Queue!`);
+          addNotification({
+            title: 'Job Queued in Pre-Press',
+            message: `Job #${newJob.id} ("${newJob.jobTitle}") scheduled for CTP plates & offset printing.`,
+            category: 'production',
+            priority: 'normal',
+            targetTab: 'production_queue',
+            actionText: 'View Queue',
+            entityId: newJob.id,
+          });
           navigateTo('production_queue');
         }}
         onBuyPaperForJob={(st, cl, jId) => {
@@ -493,6 +584,15 @@ export default function PrintOSPage() {
           });
           const dueMsg = newInv.dueAmount > 0 ? ` (Due: ৳${newInv.dueAmount.toLocaleString()})` : ' (Fully Paid)';
           showToast(`Commercial Sales Invoice ${newInv.id} created! Advance: ৳${finalAdvance.toLocaleString()}${dueMsg}`);
+          addNotification({
+            title: 'Sales Invoice Created',
+            message: `Invoice #${newInv.id} for "${newInv.clientName}" created • Total: ৳${newInv.totalAmount.toLocaleString()} • Advance: ৳${finalAdvance.toLocaleString()}`,
+            category: 'finance',
+            priority: 'normal',
+            targetTab: 'invoices',
+            actionText: 'View Invoice',
+            entityId: newInv.id,
+          });
           navigateTo('invoices');
         }}
       />
@@ -594,6 +694,15 @@ export default function PrintOSPage() {
         staff={payroll.activeStaffForPay}
         onDisburseSalary={(payload) => {
           payroll.recordSalaryPayment(payload);
+          addNotification({
+            title: 'Staff Salary Disbursed',
+            message: `৳ ${payload.amount.toLocaleString()} paid to ${payroll.activeStaffForPay?.name} (${payroll.activeStaffForPay?.roleLabel}) via ${payload.paymentMethod.toUpperCase()}`,
+            category: 'payroll',
+            priority: 'normal',
+            targetTab: 'payroll',
+            actionText: 'View Payroll',
+            entityId: payroll.activeStaffForPay?.id,
+          });
           // If paid via cash, automatically record in Factory Cash Book
           if (payload.paymentMethod === 'cash') {
             finance.addCashEntry({
@@ -613,6 +722,31 @@ export default function PrintOSPage() {
         isOpen={!!payroll.activeStaffForSlip}
         onClose={() => payroll.setActiveStaffForSlip(null)}
         staff={payroll.activeStaffForSlip}
+      />
+
+      <AddEditStaffModal
+        isOpen={payroll.isAddStaffModalOpen}
+        onClose={() => {
+          payroll.setIsAddStaffModalOpen(false);
+          payroll.setStaffToEdit(null);
+        }}
+        staffToEdit={payroll.staffToEdit}
+        onSaveStaff={(data) => {
+          if (data.id) {
+            payroll.updateStaff(data as StaffMember);
+          } else {
+            payroll.addStaff(data);
+          }
+        }}
+        onSuccessToast={showToast}
+      />
+
+      <DeleteStaffModal
+        isOpen={!!payroll.staffToDelete}
+        onClose={() => payroll.setStaffToDelete(null)}
+        staff={payroll.staffToDelete}
+        onConfirmDelete={(id) => payroll.removeStaff(id)}
+        onSuccessToast={showToast}
       />
 
       {/* New User Onboarding Wizard Modal */}

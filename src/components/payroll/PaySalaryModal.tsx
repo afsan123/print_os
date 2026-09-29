@@ -53,11 +53,11 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
       <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl border border-slate-200">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-purple-100 text-purple-800">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-[#1D5DFF]">
               <CreditCard className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-slate-900">
+              <h3 className="text-base font-bold font-heading text-slate-900">
                 Disburse Salary (বেতন পরিশোধ)
               </h3>
               <p className="text-xs text-slate-500">
@@ -100,7 +100,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
             )}
             <div className="flex items-center justify-between pt-2 border-t border-slate-200 font-bold text-slate-900 text-sm">
               <span>Total Net Payable:</span>
-              <span className="font-mono text-purple-900">৳ {staff.netPayable.toLocaleString()}</span>
+              <span className="font-mono text-[#1D5DFF]">৳ {staff.netPayable.toLocaleString()}</span>
             </div>
             {staff.paidAmount > 0 && (
               <div className="flex items-center justify-between text-slate-500 text-[11px]">
@@ -126,7 +126,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
               value={amount}
               onChange={(e) => setAmount(Number(e.target.value))}
               required
-              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-sm font-mono font-bold text-slate-900 focus:border-purple-600 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-sm font-mono font-bold text-slate-900 focus:border-[#1D5DFF] focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20"
             />
           </div>
 
@@ -147,7 +147,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
                   onClick={() => setPaymentMethod(m.id as 'cash' | 'bank' | 'bkash')}
                   className={`rounded-xl border py-2 text-xs font-bold transition-all ${
                     paymentMethod === m.id
-                      ? 'border-purple-600 bg-purple-50 text-purple-900'
+                      ? 'border-[#1D5DFF] bg-blue-50 text-[#1D5DFF]'
                       : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                   }`}
                 >
@@ -167,7 +167,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
               value={paymentDate}
               onChange={(e) => setPaymentDate(e.target.value)}
               required
-              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-xs font-medium text-slate-900 focus:border-purple-600 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-xs font-medium text-slate-900 focus:border-[#1D5DFF] focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20"
             />
           </div>
 
@@ -181,7 +181,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="e.g., September 2025 salary disbursed via Cash counter"
-              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-xs font-medium text-slate-900 focus:border-purple-600 focus:outline-none"
+              className="w-full rounded-xl border border-slate-300 bg-white py-2 px-3 text-xs font-medium text-slate-900 focus:border-[#1D5DFF] focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20"
             />
           </div>
 
@@ -195,7 +195,7 @@ export const PaySalaryModal: React.FC<PaySalaryModalProps> = ({
             </button>
             <button
               type="submit"
-              className="rounded-xl bg-[#881337] px-5 py-2 text-xs font-bold text-white hover:bg-[#700f2e] transition-colors shadow-sm"
+              className="rounded-xl bg-[#1D5DFF] px-5 py-2 text-xs font-bold text-white hover:bg-[#154cdb] transition-colors shadow-sm"
             >
               Confirm Disbursement
             </button>

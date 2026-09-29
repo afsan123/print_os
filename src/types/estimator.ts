@@ -1,6 +1,6 @@
 export type PaperPriceMode = 'ream' | 'sheet';
 
-export type PrintColorMode = '1 Color' | '2 Color' | '4 Color (CMYK)';
+export type PrintColorMode = '1 Color' | '2 Color' | '3 Color' | '4 Color (CMYK)';
 
 export type PrintSidesMode = 'One Side' | 'Two Side (Work & Turn)';
 
@@ -29,8 +29,17 @@ export interface PaperConfig {
 export interface PressConfig {
   colors: PrintColorMode;
   sides: PrintSidesMode;
-  costPerPlate: number;
-  impressionRatePerThousand: number;
+  printBill: number; // Single input for printing cost / bill (ছাপা খরচ / প্রিন্টিং বিল ৳)
+  costPerPlate?: number;
+  impressionRatePerThousand?: number;
+}
+
+export interface CustomFinishingItem {
+  id: string;
+  name: string;
+  enabled: boolean;
+  setupCharge: number; // Die/Block/Setup charge in ৳
+  ratePerPcs: number; // Rate per piece in ৳
 }
 
 export interface FinishingConfig {
@@ -49,6 +58,7 @@ export interface FinishingConfig {
     type: BindingType;
     ratePerPcs: number;
   };
+  customFinishings?: CustomFinishingItem[];
 }
 
 export interface AdditionalExpenses {
@@ -78,6 +88,8 @@ export interface CalculationResult {
   laminationCost: number;
   dieCuttingCost: number;
   bindingCost: number;
+  customFinishingCost: number;
+  customFinishingsBreakdown: { id: string; name: string; cost: number }[];
 
   // Expenses
   transportCost: number;

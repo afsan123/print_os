@@ -103,11 +103,20 @@ export function useProductionQueue() {
       paperSpec: `${state.paperConfig.paperType} (${state.paperConfig.fullSheetSize})`,
       colors: state.pressConfig.colors,
       platesCount: calc.plateCount,
+      printBill: calc.printingCost,
       hasLamination: state.finishingConfig.lamination.enabled,
       laminationType: state.finishingConfig.lamination.type,
       hasDieCutting: state.finishingConfig.dieCutting.enabled,
       hasBinding: state.finishingConfig.binding.enabled,
       bindingType: state.finishingConfig.binding.type,
+      hasCustomFinishing: (state.finishingConfig.customFinishings || []).some((c) => c.enabled && c.name.trim()),
+      customFinishingSummary: (state.finishingConfig.customFinishings || [])
+        .filter((c) => c.enabled && c.name.trim())
+        .map((c) => c.name)
+        .join(', '),
+      customFinishingsJson: JSON.stringify(
+        (state.finishingConfig.customFinishings || []).filter((c) => c.enabled && c.name.trim())
+      ),
       notes: state.additionalExpenses.notes,
       targetImpressions: calc.machineImpressions,
       currentImpressions: 0,

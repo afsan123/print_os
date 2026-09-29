@@ -23,6 +23,39 @@ export function useInventoryProcurement() {
   const [isDirectPurchaseModalOpen, setIsDirectPurchaseModalOpen] = useState(false);
   const [activeJobForPurchase, setActiveJobForPurchase] = useState<{ jobTitle: string; client: string; category: string; paperType: string; gsm: number; fullSheetSize: string; reams: number; sheets: number; ratePerReam: number; jobId?: string } | null>(null);
 
+  // Initialize optional inventory preference from localStorage (Default: OFF for small press)
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('printos_inventory_enabled');
+      if (stored !== null) {
+        setIsInventoryEnabled(stored === 'true');
+      }
+    } catch {
+      // Ignore in SSR
+    }
+  }, []);
+
+  const setInventoryEnabled = useCallback((enabled: boolean) => {
+    setIsInventoryEnabled(enabled);
+    try {
+      localStorage.setItem('printos_inventory_enabled', String(enabled));
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const toggleInventoryMode = useCallback(() => {
+    setIsInventoryEnabled((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem('printos_inventory_enabled', String(next));
+      } catch {
+        // Ignore
+      }
+      return next;
+    });
+  }, []);
+
   // Cloud hydration
   useEffect(() => {
     appwriteService.fetchSuppliers().then((cloudSuppliers) => {
@@ -39,6 +72,15 @@ export function useInventoryProcurement() {
         setPurchaseBills((prev) => {
           const ids = new Set(cloudBills.map((b) => b.id));
           return [...cloudBills, ...prev.filter((p) => !ids.has(p.id))];
+        });
+      }
+    });
+
+    appwriteService.fetchStockItems().then((cloudStock) => {
+      if (cloudStock && cloudStock.length > 0) {
+        setStockItems((prev) => {
+          const ids = new Set(cloudStock.map((s) => s.id));
+          return [...cloudStock, ...prev.filter((p) => !ids.has(p.id))];
         });
       }
     });
@@ -76,5 +118,103 @@ export function useInventoryProcurement() {
     setIsDirectPurchaseModalOpen(true);
   }, []);
 
-  return { suppliers, purchaseBills, stockItems, isInventoryEnabled, toggleInventoryMode: () => setIsInventoryEnabled((value) => !value), addSupplier, createPurchaseBill, recordBillPayment, openDirectPurchaseForJob, isDirectPurchaseModalOpen, setIsDirectPurchaseModalOpen, activeJobForPurchase };
+  // Hydrate custom godown stock from localStorage if available
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('printos_godown_stock');
+      if (stored) {
+        setStockItems(JSON.parse(stored));
+      }
+    } catch {
+      // Ignore
+    }
+  }, []);
+
+  const persistStock = (items: StockItem[]) => {
+    setStockItems(items);
+    try {
+      localStorage.setItem('printos_godown_stock', JSON.stringify(items));
+    } catch {
+      // Ignore
+    }
+  };
+
+  const addStockItem = useCallback((itemData: Omit<StockItem, 'id' | 'sheetsAvailable'> & { sheetsAvailable?: number }) => {
+    const newItem: StockItem = {
+      ...itemData,
+      id: `stock-${Date.now().toString().slice(-4)}`,
+      sheetsAvailable: itemData.sheetsAvailable ?? Math.round(itemData.reamsAvailable * 500),
+      lastRestocked: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+    };
+    persistStock([newItem, ...stockItems]);
+    appwriteService.saveStockItem(newItem).catch(() => {});
+    return newItem;
+  }, [stockItems]);
+
+  const adjustStock = useCallback((
+    stockId: string,
+    type: 'in' | 'out',
+    reamsChange: number,
+    sheetsChange: number = 0,
+    reason: string = ''
+  ) => {
+    const totalSheetsChange = Math.round(reamsChange * 500) + sheetsChange;
+    const nowStr = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+
+    const updated = stockItems.map((item) => {
+      if (item.id !== stockId) return item;
+      const currentTotalSheets = Math.round(item.reamsAvailable * 500) + (item.sheetsAvailable % 500);
+      const newTotalSheets = type === 'in'
+        ? currentTotalSheets + totalSheetsChange
+        : Math.max(0, currentTotalSheets - totalSheetsChange);
+
+      const newReams = +(newTotalSheets / 500).toFixed(2);
+      return {
+        ...item,
+        reamsAvailable: newReams,
+        sheetsAvailable: newTotalSheets,
+        lastRestocked: type === 'in' ? nowStr : item.lastRestocked,
+      };
+    });
+
+    persistStock(updated);
+    const adjusted = updated.find((i) => i.id === stockId);
+    if (adjusted) {
+      appwriteService.saveStockItem(adjusted).catch(() => {});
+    }
+  }, [stockItems]);
+
+  const updateStockItem = useCallback((stockId: string, updates: Partial<StockItem>) => {
+    const updated = stockItems.map((item) => (item.id === stockId ? { ...item, ...updates } : item));
+    persistStock(updated);
+    const target = updated.find((i) => i.id === stockId);
+    if (target) {
+      appwriteService.saveStockItem(target).catch(() => {});
+    }
+  }, [stockItems]);
+
+  const deleteStockItem = useCallback((stockId: string) => {
+    persistStock(stockItems.filter((item) => item.id !== stockId));
+    appwriteService.deleteStockItem(stockId).catch(() => {});
+  }, [stockItems]);
+
+  return {
+    suppliers,
+    purchaseBills,
+    stockItems,
+    isInventoryEnabled,
+    toggleInventoryMode,
+    setInventoryEnabled,
+    addStockItem,
+    adjustStock,
+    updateStockItem,
+    deleteStockItem,
+    addSupplier,
+    createPurchaseBill,
+    recordBillPayment,
+    openDirectPurchaseForJob,
+    isDirectPurchaseModalOpen,
+    setIsDirectPurchaseModalOpen,
+    activeJobForPurchase,
+  };
 }

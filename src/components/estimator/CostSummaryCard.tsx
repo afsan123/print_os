@@ -35,11 +35,11 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
   };
 
   return (
-    <div className="sticky top-20 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-6 sm:p-7 shadow-xs space-y-6">
+    <div className="sticky top-20 rounded-2xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] p-6 sm:p-7 shadow-2xs space-y-6">
       {/* Panel Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="flex items-center justify-between pb-4 border-b border-[#E8EDF5] dark:border-[#162E63]">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-slate-900 dark:bg-[#881337] text-emerald-400 dark:text-white">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#23A8FF] to-[#1D5DFF] text-white shadow-xs">
             <Calculator className="h-4.5 w-4.5" />
           </div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white">Cost Summary</h2>
@@ -51,28 +51,30 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
       </div>
 
       {/* Itemized Production Cost Rows */}
-      <div className="space-y-3 text-xs text-slate-600 dark:text-slate-400">
+      <div className="space-y-3 text-xs text-slate-600 dark:text-[#D8E3FF]/80">
         {/* Paper Cost */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Paper Cost</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Paper Cost</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.paperCost)}
           </span>
         </div>
 
-        {/* CTP Plates */}
-        <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">
-            CTP Plates ({calc.plateCount})
-          </span>
-          <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
-            ৳ {formatCurrency(calc.plateCost)}
-          </span>
-        </div>
+        {/* CTP Plates (if separate) */}
+        {calc.plateCost > 0 && (
+          <div className="flex items-center justify-between">
+            <span className="text-slate-600 dark:text-[#D8E3FF]/80">
+              CTP Plates ({calc.plateCount})
+            </span>
+            <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
+              ৳ {formatCurrency(calc.plateCost)}
+            </span>
+          </div>
+        )}
 
-        {/* Printing (Impressions) */}
+        {/* Print Bill */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Printing (Impressions)</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Print Bill (ছাপা খরচ)</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.printingCost)}
           </span>
@@ -80,7 +82,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
 
         {/* Lamination */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Lamination</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Lamination</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.laminationCost)}
           </span>
@@ -88,7 +90,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
 
         {/* Die Cutting */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Die Cutting</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Die Cutting</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.dieCuttingCost)}
           </span>
@@ -96,15 +98,29 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
 
         {/* Binding */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Binding</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Binding</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.bindingCost)}
           </span>
         </div>
 
+        {/* Custom Finishings */}
+        {calc.customFinishingsBreakdown && calc.customFinishingsBreakdown.length > 0 && (
+          calc.customFinishingsBreakdown.map((item) => (
+            <div key={item.id} className="flex items-center justify-between">
+              <span className="text-slate-600 dark:text-[#D8E3FF]/80 truncate max-w-[200px]" title={item.name}>
+                {item.name}
+              </span>
+              <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
+                ৳ {formatCurrency(item.cost)}
+              </span>
+            </div>
+          ))
+        )}
+
         {/* Transport */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Transport</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Transport</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.transportCost)}
           </span>
@@ -112,15 +128,15 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
 
         {/* Other Expenses */}
         <div className="flex items-center justify-between">
-          <span className="text-slate-600 dark:text-slate-400">Other Expenses</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80">Other Expenses</span>
           <span className="font-semibold text-slate-900 dark:text-white font-mono text-[13px]">
             ৳ {formatCurrency(calc.otherExpensesCost)}
           </span>
         </div>
 
         {/* Total Production Cost */}
-        <div className="pt-3.5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-sm">
-          <span className="font-bold text-slate-900 dark:text-slate-200">Total Production Cost</span>
+        <div className="pt-3.5 border-t border-[#E8EDF5] dark:border-[#162E63] flex items-center justify-between text-sm">
+          <span className="font-bold text-slate-900 dark:text-[#D8E3FF]">Total Production Cost</span>
           <span className="font-bold text-slate-950 dark:text-white font-mono text-base">
             ৳ {formatCurrency(calc.totalProductionCost)}
           </span>
@@ -128,12 +144,12 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
       </div>
 
       {/* Interactive Profit Margin Slider */}
-      <div className="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+      <div className="pt-3 border-t border-[#E8EDF5] dark:border-[#162E63] space-y-2.5">
         <div className="flex items-center justify-between text-xs">
-          <label htmlFor="profit-margin-slider" className="font-bold text-slate-800 dark:text-slate-200">
+          <label htmlFor="profit-margin-slider" className="font-bold text-slate-800 dark:text-white">
             Profit Margin
           </label>
-          <span className="font-extrabold text-[#881337] dark:text-rose-400 font-mono text-base">
+          <span className="font-extrabold text-[#1D5DFF] dark:text-[#23A8FF] font-mono text-base">
             {profitMarginPercent}%
           </span>
         </div>
@@ -146,7 +162,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
           step={1}
           value={profitMarginPercent}
           onChange={(e) => onProfitMarginChange(parseInt(e.target.value) || 0)}
-          className="w-full h-2.5 bg-slate-200 dark:bg-slate-800 rounded-lg appearance-none cursor-pointer accent-[#881337]"
+          className="w-full h-2.5 bg-slate-200 dark:bg-[#071A3D] rounded-lg appearance-none cursor-pointer accent-[#1D5DFF]"
         />
 
         {/* Quick margin pill buttons */}
@@ -158,8 +174,8 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
               onClick={() => onProfitMarginChange(preset)}
               className={`flex-1 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 profitMarginPercent === preset
-                  ? 'bg-rose-100 dark:bg-rose-950/70 text-[#881337] dark:text-rose-300 border border-rose-300 dark:border-rose-800 shadow-2xs'
-                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                  ? 'bg-blue-50 dark:bg-[#122A59] text-[#1D5DFF] dark:text-[#23A8FF] border border-[#1D5DFF]/30 dark:border-[#23A8FF]/50 shadow-2xs'
+                  : 'bg-slate-100 dark:bg-[#071A3D] text-slate-600 dark:text-[#D8E3FF]/70 hover:bg-slate-200 dark:hover:bg-[#122A59]'
               }`}
             >
               {preset}%
@@ -168,16 +184,16 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
         </div>
 
         {/* Calculated Profit Amount Row */}
-        <div className="flex items-center justify-between p-3 rounded-xl bg-rose-50/80 dark:bg-rose-950/50 border border-rose-100/90 dark:border-rose-900/50 text-xs mt-2">
-          <span className="font-semibold text-rose-900 dark:text-rose-300">Profit Amount</span>
-          <span className="font-bold text-rose-900 dark:text-rose-200 font-mono text-sm">
+        <div className="flex items-center justify-between p-3 rounded-xl bg-blue-50/70 dark:bg-[#071A3D] border border-blue-100/90 dark:border-[#162E63] text-xs mt-2">
+          <span className="font-semibold text-[#1D5DFF] dark:text-[#23A8FF]">Profit Amount</span>
+          <span className="font-bold text-[#1D5DFF] dark:text-white font-mono text-sm">
             ৳ {formatCurrency(calc.profitAmount)}
           </span>
         </div>
       </div>
 
       {/* Final Selling Price Highlight Box */}
-      <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800/80 bg-[#f0fdf4] dark:bg-gradient-to-br dark:from-emerald-950/70 dark:to-teal-950/60 p-5 shadow-2xs space-y-3">
+      <div className="rounded-2xl border border-emerald-300 dark:border-emerald-800/80 bg-[#f0fdf4] dark:bg-[#06261d] p-5 shadow-2xs space-y-3">
         <div className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 dark:text-emerald-300">
           Final Selling Price
         </div>
@@ -185,7 +201,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
           ৳ {formatCurrency(calc.finalSellingPrice)}
         </div>
         <div className="pt-2.5 border-t border-emerald-200/80 dark:border-emerald-900/60 flex items-center justify-between text-xs">
-          <span className="text-slate-600 dark:text-slate-300 font-medium">Per Piece Cost</span>
+          <span className="text-slate-600 dark:text-[#D8E3FF]/80 font-medium">Per Piece Cost</span>
           <span className="font-bold text-slate-900 dark:text-white font-mono text-sm">
             ৳ {calc.perPieceCost.toFixed(2)}
           </span>
@@ -193,11 +209,11 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
       </div>
 
       {/* Optional Advance Deposit Section */}
-      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/70 dark:bg-slate-900/70 p-3.5 space-y-2.5 text-xs">
+      <div className="rounded-xl border border-[#E8EDF5] dark:border-[#162E63] bg-[#F5F7FA] dark:bg-[#071A3D] p-3.5 space-y-2.5 text-xs">
         <div className="flex items-center justify-between">
-          <label className="font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1.5">
+          <label className="font-bold text-slate-800 dark:text-white flex items-center gap-1.5">
             <span>Advance Deposit (অগ্রিম জমা)</span>
-            <span className="text-[10px] font-normal text-slate-500 dark:text-slate-400 bg-slate-200/60 dark:bg-slate-800 px-1.5 py-0.5 rounded">
+            <span className="text-[10px] font-normal text-slate-500 dark:text-[#D8E3FF]/60 bg-slate-200/70 dark:bg-[#0B224F] px-1.5 py-0.5 rounded">
               Optional (ঐচ্ছিক)
             </span>
           </label>
@@ -218,7 +234,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
               value={advanceAmount || ''}
               placeholder="0 (ঐচ্ছিক অগ্রিম)"
               onChange={(e) => setAdvanceAmount(Math.max(0, parseInt(e.target.value) || 0))}
-              className="w-full h-8.5 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 font-mono font-bold text-slate-900 dark:text-white text-xs focus:outline-none focus:border-[#881337]"
+              className="w-full h-8.5 pl-6 pr-3 rounded-lg border border-slate-300 dark:border-[#162E63] bg-white dark:bg-[#0B224F] font-mono font-bold text-slate-900 dark:text-white text-xs focus:outline-none focus:border-[#1D5DFF]"
             />
           </div>
 
@@ -228,8 +244,8 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
               onClick={() => setAdvanceAmount(0)}
               className={`px-2 py-1.5 rounded-md text-[10px] font-bold transition-all ${
                 advanceAmount === 0
-                  ? 'bg-slate-900 text-white dark:bg-slate-700'
-                  : 'bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-300'
+                  ? 'bg-[#071A3D] text-white dark:bg-[#1D5DFF]'
+                  : 'bg-slate-200 dark:bg-[#0B224F] text-slate-700 dark:text-[#D8E3FF] hover:bg-slate-300'
               }`}
             >
               0
@@ -239,8 +255,8 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
               onClick={() => setAdvanceAmount(Math.round(totalSellingPrice * 0.3))}
               className={`px-2 py-1.5 rounded-md text-[10px] font-bold transition-all ${
                 advanceAmount === Math.round(totalSellingPrice * 0.3)
-                  ? 'bg-[#881337] text-white'
-                  : 'bg-rose-100 dark:bg-rose-950/80 text-[#881337] dark:text-rose-300 hover:bg-rose-200'
+                  ? 'bg-[#1D5DFF] text-white'
+                  : 'bg-blue-50 dark:bg-[#0B224F] text-[#1D5DFF] dark:text-[#23A8FF] hover:bg-blue-100'
               }`}
             >
               30%
@@ -250,8 +266,8 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
               onClick={() => setAdvanceAmount(Math.round(totalSellingPrice * 0.5))}
               className={`px-2 py-1.5 rounded-md text-[10px] font-bold transition-all ${
                 advanceAmount === Math.round(totalSellingPrice * 0.5)
-                  ? 'bg-[#881337] text-white'
-                  : 'bg-rose-100 dark:bg-rose-950/80 text-[#881337] dark:text-rose-300 hover:bg-rose-200'
+                  ? 'bg-[#1D5DFF] text-white'
+                  : 'bg-blue-50 dark:bg-[#0B224F] text-[#1D5DFF] dark:text-[#23A8FF] hover:bg-blue-100'
               }`}
             >
               50%
@@ -260,9 +276,9 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
         </div>
 
         {advanceAmount > 0 && (
-          <div className="pt-1.5 border-t border-slate-200/80 dark:border-slate-800 flex justify-between text-[11px]">
-            <span className="text-slate-500 dark:text-slate-400">Due at Delivery (বকেয়া):</span>
-            <span className="font-mono font-bold text-rose-700 dark:text-rose-400">
+          <div className="pt-1.5 border-t border-[#E8EDF5] dark:border-[#162E63] flex justify-between text-[11px]">
+            <span className="text-slate-500 dark:text-[#D8E3FF]/70">Due at Delivery (বকেয়া):</span>
+            <span className="font-mono font-bold text-[#FF008C]">
               ৳ {dueAfterAdvance.toLocaleString()}
             </span>
           </div>
@@ -275,7 +291,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
         <button
           onClick={onOpenWhatsAppModal}
           type="button"
-          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-emerald-600 dark:border-emerald-500 bg-white dark:bg-slate-900 hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 py-3 text-xs sm:text-sm font-bold transition-all shadow-2xs"
+          className="flex w-full items-center justify-center gap-2 rounded-xl border-2 border-emerald-600 dark:border-emerald-500 bg-white dark:bg-[#071A3D] hover:bg-emerald-50 dark:hover:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 py-3 text-xs sm:text-sm font-bold transition-all shadow-2xs"
         >
           <MessageCircle className="h-4.5 w-4.5 text-emerald-600" />
           <span>Send WhatsApp Quotation</span>
@@ -285,7 +301,7 @@ export const CostSummaryCard: React.FC<CostSummaryCardProps> = ({
         <button
           onClick={() => onCreateInvoiceAndJobCard(advanceAmount)}
           type="button"
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white py-3 text-xs sm:text-sm font-bold transition-all shadow-xs"
+          className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white py-3 text-xs sm:text-sm font-bold transition-all shadow-sm hover:shadow-md hover:shadow-[#1D5DFF]/25 active:scale-[0.98]"
         >
           <FileText className="h-4.5 w-4.5" />
           <span>Create Invoice & Job Card</span>

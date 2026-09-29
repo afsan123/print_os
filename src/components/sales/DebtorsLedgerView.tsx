@@ -302,7 +302,7 @@ export const DebtorsLedgerView: React.FC<DebtorsLedgerViewProps> = ({
 
                           <button
                             onClick={() => onOpenPaymentForClient(d.clientName)}
-                            className="inline-flex items-center gap-1 rounded-lg bg-[#881337] px-3 py-1.5 text-[11px] font-bold text-white hover:bg-[#700f2e] transition-colors shadow-2xs"
+                            className="inline-flex items-center gap-1 rounded-lg bg-[#1D5DFF] px-3 py-1.5 text-[11px] font-bold text-white hover:bg-[#154cdb] transition-colors shadow-2xs"
                           >
                             <CreditCard className="h-3 w-3" />
                             <span>Collect Payment</span>

@@ -42,7 +42,7 @@ export const AdditionalExpensesCard: React.FC<AdditionalExpensesCardProps> = ({
             value={expenses.transport || ''}
             onChange={(e) => onUpdate({ transport: parseFloat(e.target.value) || 0 })}
             placeholder="2,000"
-            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
           />
         </div>
 
@@ -56,7 +56,7 @@ export const AdditionalExpensesCard: React.FC<AdditionalExpensesCardProps> = ({
             value={expenses.otherExpenses || ''}
             onChange={(e) => onUpdate({ otherExpenses: parseFloat(e.target.value) || 0 })}
             placeholder="1,000"
-            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
           />
         </div>
 
@@ -68,7 +68,7 @@ export const AdditionalExpensesCard: React.FC<AdditionalExpensesCardProps> = ({
             value={expenses.notes}
             onChange={(e) => onUpdate({ notes: e.target.value })}
             placeholder="Any special instructions or notes..."
-            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
           />
         </div>
       </div>

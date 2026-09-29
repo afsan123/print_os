@@ -25,6 +25,7 @@ interface PurchaseBillsViewProps {
   stockItems: StockItem[];
   onRecordPayment: (billId: string, amount: number) => void;
   onGoToEstimator: () => void;
+  onNavigateToInventory?: () => void;
 }
 
 export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
@@ -34,6 +35,7 @@ export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
   stockItems,
   onRecordPayment,
   onGoToEstimator,
+  onNavigateToInventory,
 }) => {
   const [filterStatus, setFilterStatus] = useState<string>('all');
   const [search, setSearch] = useState('');
@@ -68,12 +70,12 @@ export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
       {/* Header Bar */}
       <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 rounded-2xl border border-slate-200/90 bg-white p-5 sm:p-6 shadow-xs">
         <div className="flex items-center gap-4">
-          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#881337] text-white shadow-sm shadow-rose-950/20">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#1D5DFF] text-white shadow-sm shadow-[#1D5DFF]/20">
             <FileSpreadsheet className="h-6 w-6" />
           </div>
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 font-heading">
                 Paper Purchase Bills & Procurement
               </h1>
               <span className="rounded-full bg-slate-100 text-slate-700 px-2.5 py-0.5 text-xs font-bold font-mono">
@@ -87,7 +89,18 @@ export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
         </div>
 
         {/* Action Controls & On-Demand Inventory Toggle */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
+          {isInventoryEnabled && onNavigateToInventory && (
+            <button
+              type="button"
+              onClick={onNavigateToInventory}
+              className="inline-flex items-center gap-1.5 rounded-xl bg-purple-50 text-purple-700 border border-purple-200 hover:bg-purple-100 px-3.5 py-2.5 text-xs font-bold transition-all shadow-2xs active:scale-[0.98]"
+            >
+              <Package className="h-4 w-4 text-purple-600" />
+              <span>Godown Stock (গুদাম দেখুন ➔)</span>
+            </button>
+          )}
+
           {/* On-Demand Godown Inventory Toggle Button */}
           <button
             type="button"
@@ -100,14 +113,14 @@ export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
           >
             <Package className={`h-4 w-4 ${isInventoryEnabled ? 'text-emerald-600' : 'text-slate-500'}`} />
             <span>
-              {isInventoryEnabled ? 'Godown Stock: ACTIVE' : 'Enable Godown Stock'}
+              {isInventoryEnabled ? 'Stock: ACTIVE' : 'Enable Godown Stock'}
             </span>
           </button>
 
           <button
             onClick={onGoToEstimator}
             type="button"
-            className="inline-flex items-center gap-1.5 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-4 py-2.5 text-xs font-bold transition-all shadow-xs"
           >
             <Plus className="h-4 w-4" />
             <span>Buy Paper for New Job</span>
@@ -147,6 +160,7 @@ export const PurchaseBillsView: React.FC<PurchaseBillsViewProps> = ({
         isInventoryEnabled={isInventoryEnabled}
         onToggleInventory={onToggleInventory}
         stockItems={stockItems}
+        onNavigateToInventory={onNavigateToInventory}
       />
 
       {/* Filter and Search Bar */}

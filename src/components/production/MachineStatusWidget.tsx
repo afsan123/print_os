@@ -88,7 +88,7 @@ export const MachineStatusWidget: React.FC<MachineStatusWidgetProps> = ({
                   </span>
                 </div>
                 {machine.currentJobTitle && (
-                  <p className="truncate font-semibold text-[#881337] dark:text-rose-300 bg-white dark:bg-slate-950 px-2 py-0.5 rounded border border-rose-200 dark:border-rose-900/60 text-[10px]">
+                  <p className="truncate font-semibold text-[#1D5DFF] dark:text-[#23A8FF] bg-white dark:bg-slate-950 px-2 py-0.5 rounded border border-blue-200 dark:border-blue-900/60 text-[10px]">
                     ▶ {machine.currentJobTitle}
                   </p>
                 )}

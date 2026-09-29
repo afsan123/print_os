@@ -46,6 +46,18 @@ export const BINDING_TYPES = [
   'Spiral Wire',
 ];
 
+export const CUSTOM_FINISHING_PRESETS = [
+  { name: 'Foil Stamping (গোল্ড/সিলভার ফয়েল)', defaultSetup: 1500, defaultRate: 0.6 },
+  { name: 'Embossing (এমবসিং)', defaultSetup: 1200, defaultRate: 0.4 },
+  { name: 'Spot UV (স্পট ইউভি)', defaultSetup: 800, defaultRate: 0.75 },
+  { name: 'Creasing & Scoring (ক্রিজিং)', defaultSetup: 500, defaultRate: 0.2 },
+  { name: 'Serial Numbering (নাম্বারিং)', defaultSetup: 300, defaultRate: 0.15 },
+  { name: 'Perforation (পারফোরেশন)', defaultSetup: 400, defaultRate: 0.15 },
+  { name: 'UV Varnish / Aqueous (ইউভি বার্নিশ)', defaultSetup: 600, defaultRate: 0.5 },
+  { name: 'Eyeletting (আইলেট)', defaultSetup: 0, defaultRate: 0.8 },
+  { name: 'Corner Rounding (রাউন্ড কর্নার)', defaultSetup: 200, defaultRate: 0.25 },
+];
+
 export const DEFAULT_ESTIMATOR_STATE: EstimatorState = {
   jobSpecs: {
     jobTitle: 'Company Leaflet',
@@ -66,6 +78,7 @@ export const DEFAULT_ESTIMATOR_STATE: EstimatorState = {
   pressConfig: {
     colors: '4 Color (CMYK)',
     sides: 'One Side',
+    printBill: 3400,
     costPerPlate: 700,
     impressionRatePerThousand: 150,
   },
@@ -85,6 +98,7 @@ export const DEFAULT_ESTIMATOR_STATE: EstimatorState = {
       type: 'Saddle Stitch',
       ratePerPcs: 0.0,
     },
+    customFinishings: [],
   },
   additionalExpenses: {
     transport: 2000,
@@ -127,6 +141,7 @@ export const PRESET_TEMPLATES: PrintTemplate[] = [
       pressConfig: {
         colors: '4 Color (CMYK)',
         sides: 'Two Side (Work & Turn)',
+        printBill: 2000,
         costPerPlate: 700,
         impressionRatePerThousand: 200,
       },
@@ -180,6 +195,7 @@ export const PRESET_TEMPLATES: PrintTemplate[] = [
       pressConfig: {
         colors: '4 Color (CMYK)',
         sides: 'Two Side (Work & Turn)',
+        printBill: 4500,
         costPerPlate: 700,
         impressionRatePerThousand: 180,
       },
@@ -233,6 +249,7 @@ export const PRESET_TEMPLATES: PrintTemplate[] = [
       pressConfig: {
         colors: '4 Color (CMYK)',
         sides: 'One Side',
+        printBill: 5800,
         costPerPlate: 900,
         impressionRatePerThousand: 220,
       },
@@ -286,6 +303,7 @@ export const PRESET_TEMPLATES: PrintTemplate[] = [
       pressConfig: {
         colors: '2 Color',
         sides: 'One Side',
+        printBill: 2400,
         costPerPlate: 600,
         impressionRatePerThousand: 120,
       },

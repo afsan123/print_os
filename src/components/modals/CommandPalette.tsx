@@ -77,6 +77,7 @@ export const CommandPalette: React.FC<CommandPaletteProps> = ({
     { key: 'delivery_chalans', label: 'Delivery Chalans', icon: FileText, section: 'Sales' },
     { key: 'suppliers', label: 'Suppliers', icon: Users, section: 'Purchases' },
     { key: 'purchase_bills', label: 'Purchase Bills', icon: Receipt, section: 'Purchases' },
+    { key: 'inventory', label: 'Godown Paper Inventory & Stock (গুদাম)', icon: Layers, section: 'Purchases' },
     { key: 'cash_book', label: 'Cash Book', icon: Receipt, section: 'Finance' },
     { key: 'transactions', label: 'Transactions Ledger', icon: Receipt, section: 'Finance' },
     { key: 'expenses', label: 'Expenses', icon: Receipt, section: 'Finance' },

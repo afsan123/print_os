@@ -13,7 +13,7 @@ export const PrintingSetupCard: React.FC<PrintingSetupCardProps> = ({
   config,
   onUpdate,
 }) => {
-  const colorOptions: PrintColorMode[] = ['1 Color', '2 Color', '4 Color (CMYK)'];
+  const colorOptions: PrintColorMode[] = ['1 Color', '2 Color', '3 Color', '4 Color (CMYK)'];
   const sidesOptions: PrintSidesMode[] = ['One Side', 'Two Side (Work & Turn)'];
 
   return (
@@ -44,7 +44,7 @@ export const PrintingSetupCard: React.FC<PrintingSetupCardProps> = ({
                 name="printColors"
                 checked={config.colors === opt}
                 onChange={() => onUpdate({ colors: opt })}
-                className="h-4.5 w-4.5 text-[#881337] focus:ring-rose-500 border-slate-300 accent-[#881337]"
+                className="h-4.5 w-4.5 text-[#1D5DFF] focus:ring-[#1D5DFF] border-slate-300 accent-[#1D5DFF]"
               />
               <span className="text-slate-800 font-medium">{opt}</span>
             </label>
@@ -63,7 +63,7 @@ export const PrintingSetupCard: React.FC<PrintingSetupCardProps> = ({
                 name="printSides"
                 checked={config.sides === opt}
                 onChange={() => onUpdate({ sides: opt })}
-                className="h-4.5 w-4.5 text-[#881337] focus:ring-rose-500 border-slate-300 accent-[#881337]"
+                className="h-4.5 w-4.5 text-[#1D5DFF] focus:ring-[#1D5DFF] border-slate-300 accent-[#1D5DFF]"
               />
               <span className="text-slate-800 font-medium">{opt}</span>
             </label>
@@ -71,36 +71,27 @@ export const PrintingSetupCard: React.FC<PrintingSetupCardProps> = ({
         </div>
       </div>
 
-      {/* Plate Rate & Impression Rate */}
-      <div className="mt-5 pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-slate-700">Cost per Plate (৳)</label>
-          <input
-            type="number"
-            min={0}
-            step={50}
-            value={config.costPerPlate || ''}
-            onChange={(e) => onUpdate({ costPerPlate: parseFloat(e.target.value) || 0 })}
-            placeholder="700"
-            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
-          />
-        </div>
-
-        <div className="space-y-1.5">
-          <label className="text-xs font-semibold text-slate-700">
-            Impression Rate (৳ per 1,000)
-          </label>
-          <input
-            type="number"
-            min={0}
-            step={10}
-            value={config.impressionRatePerThousand || ''}
-            onChange={(e) =>
-              onUpdate({ impressionRatePerThousand: parseFloat(e.target.value) || 0 })
-            }
-            placeholder="150"
-            className="w-full h-10.5 px-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
-          />
+      {/* Print Bill Input */}
+      <div className="mt-5 pt-4 border-t border-slate-100">
+        <div className="space-y-1.5 max-w-sm">
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-semibold text-slate-700">
+              Print Bill (৳) <span className="text-slate-400 font-normal">(ছাপা খরচ / বিল)</span>
+            </label>
+            <span className="text-[11px] text-slate-400">Total printing charges</span>
+          </div>
+          <div className="relative">
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">৳</span>
+            <input
+              type="number"
+              min={0}
+              step={50}
+              value={config.printBill ?? ''}
+              onChange={(e) => onUpdate({ printBill: parseFloat(e.target.value) || 0 })}
+              placeholder="3400"
+              className="w-full h-10.5 pl-8 pr-3.5 rounded-xl border border-slate-300 bg-white text-sm font-medium font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
+            />
+          </div>
         </div>
       </div>
     </div>

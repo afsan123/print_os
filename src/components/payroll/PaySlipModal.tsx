@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { X, Printer, CheckCircle2, Building2 } from 'lucide-react';
 import { StaffMember } from '@/types/payroll';
 
@@ -48,8 +49,15 @@ export const PaySlipModal: React.FC<PaySlipModalProps> = ({
         <div id="printable-area" className="mt-4 space-y-6 text-slate-900">
           {/* Header */}
           <div className="text-center pb-4 border-b-2 border-slate-900">
-            <h2 className="text-2xl font-black uppercase tracking-wider text-slate-900">
-              PrintOS Commercial Press Ltd.
+            <Image
+              src="/logo.png"
+              alt="PrintOS Logo"
+              width={160}
+              height={53}
+              className="h-10 w-auto mx-auto mb-2 object-contain"
+            />
+            <h2 className="text-xl font-black uppercase tracking-wider text-slate-900 font-heading">
+              Commercial Press Ltd.
             </h2>
             <p className="text-xs text-slate-600 mt-0.5">
               128/A Arambagh, Fakirapool Press Zone, Motijheel, Dhaka-1000, Bangladesh

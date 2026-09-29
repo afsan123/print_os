@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { Settings, Sparkles } from 'lucide-react';
-import { FinishingConfig, LaminationType, BindingType } from '@/types/estimator';
-import { LAMINATION_TYPES, BINDING_TYPES } from '@/lib/constants';
+import { Settings, Plus, Trash2, Sparkles, Layers } from 'lucide-react';
+import { FinishingConfig, LaminationType, BindingType, CustomFinishingItem } from '@/types/estimator';
+import { LAMINATION_TYPES, BINDING_TYPES, CUSTOM_FINISHING_PRESETS } from '@/lib/constants';
 
 interface PostPressCardProps {
   config: FinishingConfig;
@@ -14,6 +14,33 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
   config,
   onUpdate,
 }) => {
+  const customFinishings = config.customFinishings || [];
+
+  const handleAddCustomFinishing = (preset?: { name: string; defaultSetup: number; defaultRate: number }) => {
+    const newItem: CustomFinishingItem = {
+      id: `custom-finish-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+      name: preset ? preset.name : '',
+      enabled: true,
+      setupCharge: preset ? preset.defaultSetup : 0,
+      ratePerPcs: preset ? preset.defaultRate : 0,
+    };
+    onUpdate({
+      customFinishings: [...customFinishings, newItem],
+    });
+  };
+
+  const handleUpdateCustomItem = (id: string, patch: Partial<CustomFinishingItem>) => {
+    const updated = customFinishings.map((item) =>
+      item.id === id ? { ...item, ...patch } : item
+    );
+    onUpdate({ customFinishings: updated });
+  };
+
+  const handleRemoveCustomItem = (id: string) => {
+    const updated = customFinishings.filter((item) => item.id !== id);
+    onUpdate({ customFinishings: updated });
+  };
+
   return (
     <div className="rounded-2xl border border-slate-200/90 bg-white p-6 sm:p-7 shadow-xs transition-all hover:border-slate-300">
       {/* Card Header */}
@@ -46,7 +73,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   },
                 })
               }
-              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#881337] focus:ring-rose-500 accent-[#881337]"
+              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#1D5DFF] focus:ring-[#1D5DFF] accent-[#1D5DFF]"
             />
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Lamination</span>
           </label>
@@ -64,7 +91,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                     },
                   })
                 }
-                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs cursor-pointer truncate"
+                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs cursor-pointer truncate"
               >
                 {LAMINATION_TYPES.map((lt) => (
                   <option key={lt} value={lt}>
@@ -90,7 +117,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   })
                 }
                 placeholder="Rate (৳ per Pcs)"
-                className="w-full h-10.5 px-3.5 pr-11 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10.5 px-3.5 pr-11 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
               <span className="absolute right-3 top-3 text-[11px] font-medium text-slate-400 pointer-events-none">
                 ৳/pc
@@ -113,7 +140,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   },
                 })
               }
-              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#881337] focus:ring-rose-500 accent-[#881337]"
+              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#1D5DFF] focus:ring-[#1D5DFF] accent-[#1D5DFF]"
             />
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Die Cutting</span>
           </label>
@@ -135,7 +162,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   })
                 }
                 placeholder="Die Setup Charge (৳)"
-                className="w-full h-10.5 px-3.5 pr-14 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10.5 px-3.5 pr-14 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
               <span className="absolute right-3 top-3 text-[11px] font-medium text-slate-400 pointer-events-none">
                 Setup ৳
@@ -158,7 +185,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   })
                 }
                 placeholder="Punch Rate (৳ per Pcs)"
-                className="w-full h-10.5 px-3.5 pr-14 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10.5 px-3.5 pr-14 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
               <span className="absolute right-3 top-3 text-[11px] font-medium text-slate-400 pointer-events-none">
                 ৳/punch
@@ -181,7 +208,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   },
                 })
               }
-              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#881337] focus:ring-rose-500 accent-[#881337]"
+              className="h-4.5 w-4.5 rounded border-slate-300 dark:border-slate-700 text-[#1D5DFF] focus:ring-[#1D5DFF] accent-[#1D5DFF]"
             />
             <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">Binding</span>
           </label>
@@ -199,7 +226,7 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                     },
                   })
                 }
-                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs cursor-pointer truncate"
+                className="w-full h-10.5 px-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs cursor-pointer truncate"
               >
                 {BINDING_TYPES.map((bt) => (
                   <option key={bt} value={bt}>
@@ -225,13 +252,146 @@ export const PostPressCard: React.FC<PostPressCardProps> = ({
                   })
                 }
                 placeholder="Rate (৳ per Pcs)"
-                className="w-full h-10.5 px-3.5 pr-11 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-600 transition-all shadow-2xs"
+                className="w-full h-10.5 px-3.5 pr-11 rounded-xl border border-slate-300 bg-white text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all shadow-2xs"
               />
               <span className="absolute right-3 top-3 text-[11px] font-medium text-slate-400 pointer-events-none">
                 ৳/pc
               </span>
             </div>
           </div>
+        </div>
+
+        {/* Custom Post-Press & Finishing Section */}
+        <div className="pt-3 border-t border-slate-100 space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Layers className="h-4 w-4 text-[#1D5DFF]" />
+              <label className="text-xs font-bold text-slate-900">
+                Custom Finishing Operations <span className="text-slate-400 font-normal">(কাস্টম ফিনিশিং)</span>
+              </label>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleAddCustomFinishing()}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#1D5DFF]/10 text-[#1D5DFF] hover:bg-[#1D5DFF]/20 text-xs font-bold transition-colors cursor-pointer self-start sm:self-auto"
+            >
+              <Plus className="h-3.5 w-3.5" />
+              <span>Add Custom Finishing</span>
+            </button>
+          </div>
+
+          {/* Quick Preset Badges */}
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-[11px] font-medium text-slate-400 mr-1">Quick Add:</span>
+            {CUSTOM_FINISHING_PRESETS.slice(0, 5).map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                onClick={() => handleAddCustomFinishing(preset)}
+                className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-md bg-slate-100 hover:bg-slate-200/80 text-slate-700 transition-colors"
+                title={`Add ${preset.name}`}
+              >
+                <Plus className="h-2.5 w-2.5 text-slate-500" />
+                <span>{preset.name.split(' ')[0]}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* List of Custom Finishing Items */}
+          {customFinishings.length > 0 && (
+            <div className="space-y-3 pt-1">
+              <datalist id="custom-finishing-options">
+                {CUSTOM_FINISHING_PRESETS.map((p) => (
+                  <option key={p.name} value={p.name} />
+                ))}
+              </datalist>
+
+              {customFinishings.map((item, idx) => (
+                <div
+                  key={item.id}
+                  className="flex flex-col sm:flex-row sm:items-center gap-3 p-3.5 rounded-xl border border-slate-200/90 bg-slate-50/70 hover:bg-white transition-all shadow-2xs group"
+                >
+                  {/* Enable checkbox & Name input */}
+                  <div className="flex items-center gap-2.5 flex-1 min-w-[200px]">
+                    <input
+                      type="checkbox"
+                      checked={item.enabled}
+                      onChange={(e) =>
+                        handleUpdateCustomItem(item.id, { enabled: e.target.checked })
+                      }
+                      className="h-4.5 w-4.5 rounded border-slate-300 text-[#1D5DFF] focus:ring-[#1D5DFF] accent-[#1D5DFF] cursor-pointer"
+                    />
+                    <div className="flex-1 relative">
+                      <input
+                        type="text"
+                        list="custom-finishing-options"
+                        value={item.name}
+                        disabled={!item.enabled}
+                        onChange={(e) =>
+                          handleUpdateCustomItem(item.id, { name: e.target.value })
+                        }
+                        placeholder={`Custom Operation ${idx + 1} (e.g. Foil Stamping)`}
+                        className="w-full h-10 px-3 rounded-lg border border-slate-300 bg-white text-xs sm:text-sm font-medium text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Setup & Rate Inputs */}
+                  <div className="grid grid-cols-2 sm:grid-cols-2 gap-2 sm:w-[280px]">
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={0}
+                        step={100}
+                        disabled={!item.enabled}
+                        value={item.setupCharge || ''}
+                        onChange={(e) =>
+                          handleUpdateCustomItem(item.id, {
+                            setupCharge: parseFloat(e.target.value) || 0,
+                          })
+                        }
+                        placeholder="Setup (৳)"
+                        className="w-full h-10 pl-2.5 pr-14 rounded-lg border border-slate-300 bg-white text-xs sm:text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all"
+                      />
+                      <span className="absolute right-2.5 top-2.5 text-[10px] font-medium text-slate-400 pointer-events-none">
+                        Setup ৳
+                      </span>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="number"
+                        min={0}
+                        step={0.05}
+                        disabled={!item.enabled}
+                        value={item.ratePerPcs || ''}
+                        onChange={(e) =>
+                          handleUpdateCustomItem(item.id, {
+                            ratePerPcs: parseFloat(e.target.value) || 0,
+                          })
+                        }
+                        placeholder="Rate (৳/pc)"
+                        className="w-full h-10 pl-2.5 pr-11 rounded-lg border border-slate-300 bg-white text-xs sm:text-sm font-mono text-slate-800 disabled:opacity-50 disabled:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-[#1D5DFF]/20 focus:border-[#1D5DFF] transition-all"
+                      />
+                      <span className="absolute right-2.5 top-2.5 text-[10px] font-medium text-slate-400 pointer-events-none">
+                        ৳/pc
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Remove Button */}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveCustomItem(item.id)}
+                    className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors self-end sm:self-center"
+                    title="Remove custom finishing"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

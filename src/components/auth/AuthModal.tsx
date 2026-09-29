@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import {
   Printer,
   Lock,
@@ -77,26 +78,31 @@ export const AuthModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md overflow-y-auto">
-      <div className="w-full max-w-xl rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-2xl overflow-hidden my-8 transition-all animate-in fade-in zoom-in-95 duration-200">
-        {/* Brand Banner */}
-        <div className="bg-gradient-to-br from-[#881337] via-slate-900 to-slate-900 p-7 text-white text-center relative overflow-hidden">
-          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-rose-500/10 blur-2xl" />
-          <div className="absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-emerald-500/10 blur-2xl" />
+      <div className="w-full max-w-xl rounded-3xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] shadow-2xl overflow-hidden my-8 transition-all animate-in fade-in zoom-in-95 duration-200">
+        {/* Brand Banner - Primary Brand Gradient */}
+        <div style={{ background: 'linear-gradient(135deg, #23A8FF 0%, #1D5DFF 50%, #071A3D 100%)' }} className="p-7 text-white text-center relative overflow-hidden">
+          <div className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+          <div className="absolute -left-12 -bottom-12 h-40 w-40 rounded-full bg-[#00C8FF]/20 blur-2xl" />
 
           <div className="relative z-10 flex flex-col items-center">
-            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-lg mb-3">
-              <Printer className="h-8 w-8 text-rose-300" />
-            </div>
-            <h2 className="text-2xl font-black tracking-tight text-white flex items-center gap-2">
-              PrintOS <span className="text-xs uppercase bg-rose-600/80 text-rose-100 px-2 py-0.5 rounded-full font-mono font-bold">Cloud ERP</span>
-            </h2>
-            <p className="text-xs text-slate-300 mt-1 max-w-sm">
+            <Image
+              src="/logo-white.png"
+              alt="PrintOS Logo"
+              width={200}
+              height={67}
+              priority
+              className="h-11 w-auto object-contain mb-2.5"
+            />
+            <span className="text-[11px] uppercase bg-white/20 text-white px-3 py-0.5 rounded-full font-mono font-bold tracking-wider">
+              Cloud ERP
+            </span>
+            <p className="text-xs text-white/90 mt-2 max-w-sm font-medium">
               বাণিজ্যিক অফসেট ও ডিজিটাল প্রিন্টিং প্রেস ম্যানেজমেন্ট প্ল্যাটফর্ম
             </p>
           </div>
 
           {/* Tab Switcher */}
-          <div className="mt-6 flex rounded-xl bg-white/10 p-1 backdrop-blur-md border border-white/15">
+          <div className="mt-6 flex rounded-xl bg-white/15 p-1 backdrop-blur-md border border-white/20">
             <button
               onClick={() => {
                 setActiveTab('login');
@@ -104,8 +110,8 @@ export const AuthModal: React.FC = () => {
               }}
               className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'login'
-                  ? 'bg-white text-slate-900 shadow-sm'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-white text-[#1D5DFF] shadow-sm'
+                  : 'text-white/80 hover:text-white'
               }`}
             >
               <LogIn className="h-3.5 w-3.5" />
@@ -175,7 +181,7 @@ export const AuthModal: React.FC = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full rounded-xl bg-[#881337] hover:bg-[#9f1239] text-white py-3 text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white py-3 text-xs font-bold shadow-md hover:shadow-lg hover:shadow-[#1D5DFF]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 active:scale-[0.99]"
               >
                 {isLoading ? (
                   <span>প্রবেশ করা হচ্ছে...</span>
@@ -346,7 +352,7 @@ export const AuthModal: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-full rounded-xl bg-[#881337] hover:bg-[#9f1239] text-white py-3 text-xs font-bold shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white py-3 text-xs font-bold shadow-md hover:shadow-lg hover:shadow-[#1D5DFF]/25 transition-all flex items-center justify-center gap-2 disabled:opacity-50 active:scale-[0.99]"
                 >
                   {isLoading ? (
                     <span>অ্যাকাউন্ট তৈরি হচ্ছে...</span>
@@ -368,7 +374,7 @@ export const AuthModal: React.FC = () => {
           {/* Footer Security Badge */}
           <div className="mt-6 flex items-center justify-center gap-2 text-[11px] text-slate-400">
             <ShieldCheck className="h-4 w-4 text-emerald-600" />
-            <span>Appwrite Cloud Enterprise সিকিউরিটি ও অফলাইন রেজিলিয়েন্স দ্বারা সুরক্ষিত</span>
+            <span>২৫৬-বিট এন্টারপ্রাইজ এনক্রিপশন ও অফলাইন রেজিলিয়েন্স দ্বারা সুরক্ষিত</span>
           </div>
         </div>
       </div>

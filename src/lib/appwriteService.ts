@@ -3,8 +3,10 @@ import { Permission, Query, Role } from 'appwrite';
 import { SalesInvoice, DeliveryChalan, ClientPaymentRecord } from '@/types/sales';
 import { ClientRecord } from '@/types/estimator';
 import { ProductionJob, ProductionStage } from '@/types/production';
-import { PaperSupplier, PurchaseBill } from '@/types/inventory';
+import { PaperSupplier, PurchaseBill, StockItem } from '@/types/inventory';
 import { CashBookEntry, ExpenseRecord } from '@/types/finance';
+import { PrintOSNotification, NotificationCategory, NotificationPriority } from '@/types/notification';
+import { NavItemKey } from '@/components/layout/Sidebar';
 
 /**
  * Appwrite Service Layer
@@ -319,11 +321,15 @@ export const appwriteService = {
         paperSpec: doc.paperSpec || '',
         colors: doc.colors || '4 Color (CMYK)',
         platesCount: doc.platesCount || 4,
+        printBill: doc.printBill !== undefined ? Number(doc.printBill) : undefined,
         hasLamination: !!doc.hasLamination,
         laminationType: doc.laminationType || '',
         hasDieCutting: !!doc.hasDieCutting,
         hasBinding: !!doc.hasBinding,
         bindingType: doc.bindingType || '',
+        hasCustomFinishing: !!doc.hasCustomFinishing,
+        customFinishingSummary: doc.customFinishingSummary || '',
+        customFinishingsJson: doc.customFinishingsJson || '',
         notes: doc.notes || '',
         targetImpressions: doc.targetImpressions || doc.quantity,
         currentImpressions: doc.currentImpressions || 0,
@@ -349,11 +355,15 @@ export const appwriteService = {
       paperSpec: job.paperSpec || '',
       colors: job.colors || '',
       platesCount: job.platesCount || 4,
+      printBill: job.printBill || 0,
       hasLamination: job.hasLamination,
       laminationType: job.laminationType || '',
       hasDieCutting: job.hasDieCutting,
       hasBinding: job.hasBinding,
       bindingType: job.bindingType || '',
+      hasCustomFinishing: !!job.hasCustomFinishing,
+      customFinishingSummary: job.customFinishingSummary || '',
+      customFinishingsJson: job.customFinishingsJson || '',
       notes: job.notes || '',
       targetImpressions: job.targetImpressions || job.quantity,
       currentImpressions: job.currentImpressions || 0,
@@ -696,6 +706,161 @@ export const appwriteService = {
       return true;
     } catch (e) {
       console.warn('Appwrite saveExpense notice:', e);
+      return false;
+    }
+  },
+
+  // --- GODOWN STOCK & WAREHOUSE INVENTORY ---
+  async fetchStockItems(): Promise<StockItem[] | null> {
+    try {
+      const response = await databases.listDocuments(
+        APPWRITE_CONFIG.databaseId,
+        APPWRITE_CONFIG.collections.godownStock,
+        [Query.orderDesc('$createdAt'), Query.limit(150)]
+      );
+      return response.documents.map((doc) => ({
+        id: doc.$id,
+        godownId: doc.godownId || 'main',
+        godownName: doc.godownName || 'Main Godown',
+        paperType: doc.paperType,
+        gsm: doc.gsm || 150,
+        fullSheetSize: doc.fullSheetSize || '',
+        reamsAvailable: doc.reamsAvailable || 0,
+        sheetsAvailable: doc.sheetsAvailable || 0,
+        averageUnitCost: doc.averageUnitCost || 0,
+        minThresholdReams: doc.minThresholdReams || 3,
+        lastRestocked: doc.lastRestocked || '',
+        brandOrMill: doc.brandOrMill || undefined,
+        rackLocation: doc.rackLocation || undefined,
+        notes: doc.notes || undefined,
+      }));
+    } catch {
+      return null;
+    }
+  },
+
+  async saveStockItem(item: StockItem): Promise<boolean> {
+    const data = {
+      godownId: item.godownId,
+      godownName: item.godownName,
+      paperType: item.paperType,
+      gsm: item.gsm,
+      fullSheetSize: item.fullSheetSize,
+      reamsAvailable: item.reamsAvailable,
+      sheetsAvailable: item.sheetsAvailable,
+      averageUnitCost: item.averageUnitCost,
+      minThresholdReams: item.minThresholdReams,
+      lastRestocked: item.lastRestocked,
+      brandOrMill: item.brandOrMill || '',
+      rackLocation: item.rackLocation || '',
+      notes: item.notes || '',
+    };
+    try {
+      const permissions = await this.documentPermissions();
+      try {
+        await databases.createDocument(
+          APPWRITE_CONFIG.databaseId,
+          APPWRITE_CONFIG.collections.godownStock,
+          item.id,
+          data,
+          permissions
+        );
+      } catch (err: unknown) {
+        const error = err as { code?: number; type?: string };
+        if (error?.code === 409 || error?.type === 'document_already_exists') {
+          await databases.updateDocument(
+            APPWRITE_CONFIG.databaseId,
+            APPWRITE_CONFIG.collections.godownStock,
+            item.id,
+            data
+          );
+        } else {
+          throw err;
+        }
+      }
+      return true;
+    } catch (e) {
+      console.warn('Appwrite saveStockItem notice:', e);
+      return false;
+    }
+  },
+
+  async deleteStockItem(id: string): Promise<boolean> {
+    try {
+      await databases.deleteDocument(
+        APPWRITE_CONFIG.databaseId,
+        APPWRITE_CONFIG.collections.godownStock,
+        id
+      );
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
+  // --- NOTIFICATIONS ---
+  async fetchNotifications(): Promise<PrintOSNotification[] | null> {
+    try {
+      const response = await databases.listDocuments(
+        APPWRITE_CONFIG.databaseId,
+        APPWRITE_CONFIG.collections.notifications,
+        [Query.orderDesc('$createdAt'), Query.limit(50)]
+      );
+      return response.documents.map((doc) => ({
+        id: doc.$id,
+        title: doc.title,
+        message: doc.message,
+        category: doc.category as NotificationCategory,
+        priority: doc.priority as NotificationPriority,
+        timestamp: doc.timestamp || doc.$createdAt,
+        read: !!doc.read,
+        targetTab: doc.targetTab as NavItemKey | undefined,
+        actionText: doc.actionText || '',
+        entityId: doc.entityId || '',
+      }));
+    } catch {
+      return null;
+    }
+  },
+
+  async saveNotification(n: PrintOSNotification): Promise<boolean> {
+    const data = {
+      title: n.title,
+      message: n.message,
+      category: n.category,
+      priority: n.priority,
+      timestamp: n.timestamp,
+      read: n.read,
+      targetTab: n.targetTab || '',
+      actionText: n.actionText || '',
+      entityId: n.entityId || '',
+    };
+    try {
+      const permissions = await this.documentPermissions();
+      try {
+        await databases.createDocument(
+          APPWRITE_CONFIG.databaseId,
+          APPWRITE_CONFIG.collections.notifications,
+          n.id,
+          data,
+          permissions
+        );
+      } catch (err: unknown) {
+        const error = err as { code?: number; type?: string };
+        if (error?.code === 409 || error?.type === 'document_already_exists') {
+          await databases.updateDocument(
+            APPWRITE_CONFIG.databaseId,
+            APPWRITE_CONFIG.collections.notifications,
+            n.id,
+            data
+          );
+        } else {
+          throw err;
+        }
+      }
+      return true;
+    } catch (e) {
+      console.warn('Appwrite saveNotification notice:', e);
       return false;
     }
   },

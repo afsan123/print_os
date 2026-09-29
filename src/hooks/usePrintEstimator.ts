@@ -40,20 +40,25 @@ export function usePrintEstimator(initialState: EstimatorState = DEFAULT_ESTIMAT
     let colorCount = 4;
     if (pressConfig.colors === '1 Color') colorCount = 1;
     else if (pressConfig.colors === '2 Color') colorCount = 2;
+    else if (pressConfig.colors === '3 Color') colorCount = 3;
     else if (pressConfig.colors === '4 Color (CMYK)') colorCount = 4;
 
     const sidesMultiplier = pressConfig.sides === 'Two Side (Work & Turn)' ? 2 : 1;
     // Plates needed
-    const plateCount = colorCount * (pressConfig.sides === 'Two Side (Work & Turn)' ? 2 : 1);
-    const plateCost = plateCount * (Number(pressConfig.costPerPlate) || 0);
+    const plateCount = colorCount * sidesMultiplier;
 
-    // 3. Printing (Impressions)
-    // Press impressions = totalSheetsRequired * sidesMultiplier
-    // Commercial printing press impressions minimum 1,000 and rounds to next 500 or 1,000
+    // 3. Printing (Print Bill / Impressions)
+    // Commercial printing press impressions calculation
     const pressSheets = totalSheetsRequired;
     const machineImpressions = Math.max(1000, pressSheets * sidesMultiplier);
     const impressionThousands = Math.ceil(machineImpressions / 1000);
-    const printingCost = Math.round(impressionThousands * (Number(pressConfig.impressionRatePerThousand) || 0));
+
+    // If printBill is provided, use it directly as total printing cost (plate cost included)
+    const hasCustomPrintBill = typeof pressConfig.printBill === 'number';
+    const printingCost = hasCustomPrintBill
+      ? Math.max(0, Math.round(Number(pressConfig.printBill) || 0))
+      : Math.round(impressionThousands * (Number(pressConfig.impressionRatePerThousand) || 0));
+    const plateCost = hasCustomPrintBill ? 0 : plateCount * (Number(pressConfig.costPerPlate) || 0);
 
     // 4. Post-Press & Finishing
     // Lamination: qty * ratePerPcs
@@ -74,6 +79,26 @@ export function usePrintEstimator(initialState: EstimatorState = DEFAULT_ESTIMAT
       ? Math.round(qty * (Number(finishingConfig.binding.ratePerPcs) || 0))
       : 0;
 
+    // Custom Post-Press & Finishings (Foil, Emboss, Spot UV, Numbering, etc.)
+    const customItems = finishingConfig.customFinishings || [];
+    const customFinishingsBreakdown = customItems
+      .filter((item) => item.enabled && item.name.trim() !== '')
+      .map((item) => {
+        const itemCost = Math.round(
+          (Number(item.setupCharge) || 0) + qty * (Number(item.ratePerPcs) || 0)
+        );
+        return {
+          id: item.id,
+          name: item.name,
+          cost: itemCost,
+        };
+      });
+
+    const customFinishingCost = customFinishingsBreakdown.reduce(
+      (sum, item) => sum + item.cost,
+      0
+    );
+
     // 5. Additional Expenses
     const transportCost = Number(additionalExpenses.transport) || 0;
     const otherExpensesCost = Number(additionalExpenses.otherExpenses) || 0;
@@ -86,6 +111,7 @@ export function usePrintEstimator(initialState: EstimatorState = DEFAULT_ESTIMAT
       laminationCost +
       dieCuttingCost +
       bindingCost +
+      customFinishingCost +
       transportCost +
       otherExpensesCost;
 
@@ -109,6 +135,8 @@ export function usePrintEstimator(initialState: EstimatorState = DEFAULT_ESTIMAT
       laminationCost,
       dieCuttingCost,
       bindingCost,
+      customFinishingCost,
+      customFinishingsBreakdown,
       transportCost,
       otherExpensesCost,
       totalProductionCost,

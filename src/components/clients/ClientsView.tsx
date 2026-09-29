@@ -261,23 +261,23 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
     return (
       <div className="space-y-6 animate-in fade-in duration-200">
         {/* Sticky Back Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-2 border-b border-[#E8EDF5] dark:border-[#162E63]">
           <button
             onClick={() => setSelectedClientId(null)}
-            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-slate-300 hover:text-[#881337] dark:hover:text-rose-400 transition-colors w-fit"
+            className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-slate-600 dark:text-[#D8E3FF] hover:text-[#1D5DFF] dark:hover:text-[#23A8FF] transition-colors w-fit"
           >
             <ArrowLeft className="h-4 w-4" />
             <span>← Back to All Clients (সকল গ্রাহকের তালিকায় ফিরুন)</span>
           </button>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <span className="text-xs text-slate-500 dark:text-[#D8E3FF]/70 font-mono">
               Account ID: {selectedClient.id}
             </span>
           </div>
         </div>
 
         {/* Client Profile Hero Banner */}
-        <div className="rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-6 sm:p-7 shadow-xs">
+        <div className="rounded-2xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] p-6 sm:p-7 shadow-2xs">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             {/* Left: Avatar & Details */}
             <div className="flex items-start gap-4 sm:gap-5">
@@ -307,17 +307,17 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                   )}
                 </div>
 
-                <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                <p className="text-xs sm:text-sm font-medium text-slate-600 dark:text-[#D8E3FF]/80 flex items-center gap-1.5">
                   <Building2 className="h-3.5 w-3.5 text-slate-400" />
                   <span>{selectedClient.company || selectedClient.name}</span>
                 </p>
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-slate-400 pt-1">
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500 dark:text-[#D8E3FF]/70 pt-1">
                   <span className="flex items-center gap-1">
                     <Phone className="h-3 w-3 text-slate-400" />
                     <a
                       href={`tel:${selectedClient.phone}`}
-                      className="hover:underline font-mono text-slate-700 dark:text-slate-300 font-semibold"
+                      className="hover:underline font-mono text-slate-700 dark:text-[#D8E3FF] font-semibold"
                     >
                       {selectedClient.phone}
                     </a>
@@ -331,7 +331,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                     <span>{selectedClient.address}</span>
                   </span>
                   {selectedClient.bin && (
-                    <span className="rounded bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 font-mono text-[11px] text-slate-600 dark:text-slate-300">
+                    <span className="rounded bg-slate-100 dark:bg-[#071A3D] px-1.5 py-0.5 font-mono text-[11px] text-slate-600 dark:text-[#D8E3FF]/70">
                       BIN: {selectedClient.bin}
                     </span>
                   )}
@@ -343,7 +343,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
             <div className="flex flex-wrap items-center gap-2.5 shrink-0">
               <button
                 onClick={() => onStartJobForClient(selectedClient.name)}
-                className="inline-flex items-center gap-2 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-4 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs"
+                className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-4 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-sm hover:shadow-md hover:shadow-[#1D5DFF]/25 active:scale-[0.98]"
               >
                 <Sparkles className="h-4 w-4" />
                 <span>New Estimate / Job (নতুন কাজ)</span>
@@ -454,7 +454,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               onClick={() => setActiveHistoryTab('invoices')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'invoices'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -469,7 +469,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               onClick={() => setActiveHistoryTab('payments')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'payments'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -484,7 +484,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               onClick={() => setActiveHistoryTab('jobs')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'jobs'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -499,7 +499,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               onClick={() => setActiveHistoryTab('chalans')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'chalans'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -514,7 +514,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               onClick={() => setActiveHistoryTab('ledger')}
               className={`pb-3 px-3 text-xs sm:text-sm font-bold transition-all border-b-2 whitespace-nowrap flex items-center gap-1.5 ${
                 activeHistoryTab === 'ledger'
-                  ? 'border-[#881337] text-[#881337] dark:text-rose-400'
+                  ? 'border-[#1D5DFF] text-[#1D5DFF] dark:text-[#23A8FF]'
                   : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
@@ -537,7 +537,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                   </p>
                   <button
                     onClick={() => onStartJobForClient(selectedClient.name)}
-                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#881337] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#700f2e]"
+                    className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#154cdb]"
                   >
                     Create Job & Invoice
                   </button>
@@ -728,7 +728,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                             {j.quantity.toLocaleString()} pcs
                           </td>
                           <td className="py-3.5 px-4">
-                            <span className="rounded bg-rose-100 dark:bg-rose-950/80 text-[#881337] dark:text-rose-300 font-bold px-2 py-0.5 text-[10px] uppercase">
+                            <span className="rounded bg-blue-50 dark:bg-blue-950/80 text-[#1D5DFF] dark:text-[#23A8FF] font-bold px-2 py-0.5 text-[10px] uppercase">
                               {j.currentStage}
                             </span>
                           </td>
@@ -886,9 +886,9 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
   return (
     <div className="space-y-6">
       {/* Top Banner Header */}
-      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 sm:p-6 lg:px-7 shadow-xs">
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 rounded-2xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] p-5 sm:p-6 lg:px-7 shadow-2xs">
         <div className="flex items-center gap-4 sm:gap-5">
-          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-xl bg-[#881337] text-white shadow-sm shadow-rose-950/20">
+          <div className="flex h-13 w-13 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#23A8FF] to-[#1D5DFF] text-white shadow-md shadow-[#1D5DFF]/25 ring-1 ring-white/20">
             <Users className="h-6 w-6" />
           </div>
           <div>
@@ -896,11 +896,11 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
                 Client Accounts & Ledgers (গ্রাহক খতিয়ান)
               </h1>
-              <span className="rounded-full bg-rose-100 dark:bg-rose-950/80 text-[#881337] dark:text-rose-300 font-bold text-xs px-2.5 py-0.5">
+              <span className="rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200 dark:border-blue-900 text-[#1D5DFF] dark:text-[#23A8FF] font-bold text-xs px-2.5 py-0.5">
                 {clients.length} Clients
               </span>
             </div>
-            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-normal">
+            <p className="mt-1 text-xs sm:text-sm text-slate-500 dark:text-[#D8E3FF]/70 font-normal">
               Commercial press client accounts, order history, billing ledger, and live receivables.
             </p>
           </div>
@@ -910,7 +910,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={onOpenNewClientModal}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#881337] hover:bg-[#700f2e] text-white px-5 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-xs hover:shadow-sm"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] hover:bg-[#154cdb] text-white px-5 py-2.5 text-xs sm:text-sm font-bold transition-all shadow-sm hover:shadow-md hover:shadow-[#1D5DFF]/25 active:scale-[0.98]"
           >
             <Plus className="h-4 w-4" />
             <span>Add New Client (নতুন গ্রাহক)</span>
@@ -1007,7 +1007,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by client name, company, phone, address..."
-            className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#881337] shadow-2xs"
+            className="w-full h-10 pl-10 pr-4 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs sm:text-sm text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:border-[#1D5DFF] shadow-2xs"
           />
         </div>
 
@@ -1052,7 +1052,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'due_desc' | 'sales_desc' | 'orders_desc' | 'name')}
             aria-label="Sort clients by"
-            className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#881337]"
+            className="h-10 px-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 text-xs font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:border-[#1D5DFF]"
           >
             <option value="due_desc">Sort: Highest Due First</option>
             <option value="sales_desc">Sort: Highest Billing</option>
@@ -1074,7 +1074,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
           </p>
           <button
             onClick={onOpenNewClientModal}
-            className="inline-flex items-center gap-2 rounded-xl bg-[#881337] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#700f2e]"
+            className="inline-flex items-center gap-2 rounded-xl bg-[#1D5DFF] text-white px-4 py-2 text-xs font-bold shadow-xs hover:bg-[#154cdb]"
           >
             <Plus className="h-4 w-4" />
             <span>Add New Client</span>
@@ -1086,7 +1086,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
             return (
               <div
                 key={client.id}
-                className="group rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-[#111827] p-5 shadow-xs hover:border-[#881337]/50 dark:hover:border-rose-500/50 hover:shadow-md transition-all flex flex-col justify-between"
+                className="group rounded-2xl border border-[#E8EDF5] dark:border-[#162E63] bg-white dark:bg-[#0B224F] p-5 shadow-2xs hover:border-[#1D5DFF]/40 dark:hover:border-[#23A8FF]/40 hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
                   {/* Top Bar: Avatar & Due Status Badge */}
@@ -1102,7 +1102,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                       <div>
                         <h4
                           onClick={() => setSelectedClientId(client.id)}
-                          className="font-bold text-slate-900 dark:text-white text-sm hover:text-[#881337] dark:hover:text-rose-400 cursor-pointer transition-colors line-clamp-1"
+                          className="font-bold text-slate-900 dark:text-white text-sm hover:text-[#1D5DFF] dark:hover:text-[#23A8FF] cursor-pointer transition-colors line-clamp-1"
                           title="Click to view full client history"
                         >
                           {client.name}
@@ -1178,7 +1178,7 @@ export const ClientsView: React.FC<ClientsViewProps> = ({
                 <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-2">
                   <button
                     onClick={() => setSelectedClientId(client.id)}
-                    className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 hover:bg-[#881337] dark:hover:bg-rose-900 text-white px-3 py-1.5 text-xs font-bold transition-all shadow-2xs flex-1 justify-center"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-slate-900 dark:bg-slate-800 hover:bg-[#1D5DFF] dark:hover:bg-[#1D5DFF] text-white px-3 py-1.5 text-xs font-bold transition-all shadow-2xs flex-1 justify-center"
                   >
                     <span>View History (হিস্ট্রি)</span>
                     <ArrowUpRight className="h-3.5 w-3.5" />

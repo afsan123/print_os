@@ -1,28 +1,81 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  --color-brand-blue: #1D5DFF;
+  --color-brand-navy: #071A3D;
+  --color-brand-cyan: #23A8FF;
+  --color-brand-gray: #F5F7FA;
+
+  --color-cmyk-cyan: #00C8FF;
+  --color-cmyk-magenta: #FF008C;
+  --color-cmyk-yellow: #FFD400;
+  --color-cmyk-black: #111827;
+
+  --color-card-border: #E8EDF5;
+  --color-sidebar-bg: #071A3D;
+  --color-sidebar-text: #D8E3FF;
+  --color-sidebar-active: #1D5DFF;
+
+  --font-heading: var(--font-heading), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-sans: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-mono), monospace;
+}
+
 :root {
-  --background: #f8fafc;
-  --foreground: #0f172a;
-  --card-bg: #ffffff;
-  --border-color: #e2e8f0;
+  --background: #F5F7FA;
+  --foreground: #111827;
+  --card-bg: #FFFFFF;
+  --border-color: #E8EDF5;
+
+  /* Primary Brand Tokens */
+  --printos-blue: #1D5DFF;
+  --deep-navy: #071A3D;
+  --cyan-blue: #23A8FF;
+  --cmyk-magenta: #FF008C;
+  --cmyk-yellow: #FFD400;
+  --print-cyan: #00C8FF;
+  --print-black: #111827;
+
+  /* Sidebar Palette */
+  --sidebar-bg: #071A3D;
+  --sidebar-text: #D8E3FF;
+  --sidebar-active: #1D5DFF;
+
+  /* Status Colors */
+  --status-success: #10B981;
+  --status-warning: #F59E0B;
+  --status-error: #EF4444;
 }
 
 .dark {
-  --background: #090d16;
-  --foreground: #f1f5f9;
-  --card-bg: #111827;
-  --border-color: #1e293b;
+  --background: #071A3D;
+  --foreground: #F5F7FA;
+  --card-bg: #0B224F;
+  --border-color: #162E63;
+  --sidebar-bg: #051430;
+  --sidebar-text: #D8E3FF;
+  --sidebar-active: #1D5DFF;
   color-scheme: dark;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.font-mono, [class*="font-mono"] {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-feature-settings: "tnum" 1, "zero" 1;
 }
 
 html {
@@ -34,7 +87,7 @@ button, input, select, textarea, [tabindex] {
 }
 
 :focus-visible {
-  outline: 3px solid rgba(225, 29, 72, 0.55);
+  outline: 3px solid rgba(29, 93, 255, 0.55);
   outline-offset: 2px;
 }
 
@@ -47,248 +100,167 @@ button, input, select, textarea, [tabindex] {
   }
 }
 
-/* Global Dark Mode Adaptations & High-Contrast Typography */
+/* ========================================================
+   Brand Gradients
+   ======================================================== */
+.bg-gradient-primary {
+  background-image: linear-gradient(135deg, #23A8FF 0%, #1D5DFF 50%, #071A3D 100%);
+}
+
+.bg-gradient-cmyk {
+  background-image: linear-gradient(135deg, #00C8FF, #1D5DFF, #FF008C, #FFD400);
+}
+
+.text-gradient-primary {
+  background: linear-gradient(135deg, #23A8FF 0%, #1D5DFF 50%, #071A3D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-cmyk {
+  background: linear-gradient(135deg, #00C8FF, #1D5DFF, #FF008C, #FFD400);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ========================================================
+   PrintOS Layered CMYK Paper Sheets
+   ======================================================== */
+.printos-logo-sheet-c {
+  background-color: #00C8FF !important;
+}
+.printos-logo-sheet-m {
+  background-color: #FF008C !important;
+}
+.printos-logo-sheet-y {
+  background-color: #FFD400 !important;
+}
+.printos-logo-sheet-k {
+  background-color: #FFFFFF !important;
+}
+
+/* ========================================================
+   Global Dark Mode Adaptations (Deep Navy Foundation)
+   ======================================================== */
 .dark body {
-  background-color: #090d16 !important;
-  color: #f8fafc !important;
+  background-color: #071A3D !important;
+  color: #F5F7FA !important;
 }
 
 .dark main {
-  background-color: #090d16 !important;
+  background-color: #071A3D !important;
 }
 
 .dark header {
-  background-color: #0d1322 !important;
-  border-color: #1e293b !important;
+  background-color: #091D44 !important;
+  border-color: #162E63 !important;
 }
 
 .dark .bg-white {
-  background-color: #111827 !important;
-  border-color: #1e293b !important;
+  background-color: #0B224F !important;
+  border-color: #162E63 !important;
 }
 
-/* Keep the PrintOS paper-stack mark consistent when broad dark-mode card rules apply. */
-.dark .printos-logo-sheet.bg-white {
-  background-color: #ffffff !important;
-}
-
-.dark .printos-logo-sheet.bg-rose-200\/90 {
-  background-color: rgb(254 205 211 / 0.9) !important;
-}
-
-.dark .printos-logo-sheet.bg-rose-400\/80 {
-  background-color: rgb(251 113 133 / 0.8) !important;
-}
-
-/* Catch all slate background fractions and light containers in dark mode */
 .dark .bg-slate-50,
 .dark [class*="bg-slate-50/"],
 .dark [class*="bg-slate-50"] {
-  background-color: #0e1526 !important;
+  background-color: #091E47 !important;
 }
 
 .dark .bg-slate-100,
 .dark [class*="bg-slate-100/"] {
-  background-color: #1a2333 !important;
-  color: #f1f5f9 !important;
+  background-color: #0F2A5F !important;
+  color: #F5F7FA !important;
 }
 
 .dark .border-slate-200,
 .dark [class*="border-slate-200"],
 .dark .border-slate-100,
 .dark .border-slate-300 {
-  border-color: #243049 !important;
+  border-color: #162E63 !important;
 }
 
 /* Dark Mode Colored Cards & Pills */
-.dark [class*="bg-rose-50"],
-.dark [class*="bg-rose-100"] {
-  background-color: rgba(136, 19, 55, 0.45) !important;
-  border-color: rgba(225, 29, 72, 0.45) !important;
+.dark [class*="bg-blue-50"],
+.dark [class*="bg-blue-100"] {
+  background-color: rgba(29, 93, 255, 0.15) !important;
+  border-color: rgba(35, 168, 255, 0.3) !important;
 }
 
 .dark [class*="bg-emerald-50"],
 .dark [class*="bg-emerald-100"],
 .dark .bg-\[\#f0fdf4\],
 .dark [class*="bg-[#f0fdf4]"] {
-  background-color: rgba(6, 78, 59, 0.45) !important;
-  border-color: rgba(16, 185, 129, 0.45) !important;
-}
-
-.dark [class*="bg-sky-50"],
-.dark [class*="bg-sky-100"] {
-  background-color: rgba(12, 74, 110, 0.45) !important;
-  border-color: rgba(14, 165, 233, 0.45) !important;
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
 }
 
 .dark [class*="bg-amber-50"],
 .dark [class*="bg-amber-100"] {
-  background-color: rgba(120, 53, 15, 0.45) !important;
-  border-color: rgba(245, 158, 11, 0.45) !important;
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.dark [class*="bg-rose-50"],
+.dark [class*="bg-rose-100"],
+.dark [class*="bg-pink-50"] {
+  background-color: rgba(255, 0, 140, 0.15) !important;
+  border-color: rgba(255, 0, 140, 0.35) !important;
 }
 
 .dark [class*="bg-purple-50"],
 .dark [class*="bg-purple-100"] {
-  background-color: rgba(88, 28, 135, 0.45) !important;
-  border-color: rgba(168, 85, 247, 0.45) !important;
+  background-color: rgba(139, 92, 246, 0.15) !important;
+  border-color: rgba(139, 92, 246, 0.35) !important;
 }
 
-.dark [class*="bg-indigo-50"],
-.dark [class*="bg-indigo-100"] {
-  background-color: rgba(49, 46, 129, 0.45) !important;
-  border-color: rgba(99, 102, 241, 0.45) !important;
-}
-
-.dark [class*="bg-blue-50"],
-.dark [class*="bg-blue-100"] {
-  background-color: rgba(30, 58, 138, 0.45) !important;
-  border-color: rgba(59, 130, 246, 0.45) !important;
-}
-
-/* Gradients that had light starting colors in light mode */
-.dark [class*="from-purple-50"] {
-  background-image: linear-gradient(to bottom right, rgba(88, 28, 135, 0.5), rgba(49, 46, 129, 0.4)) !important;
-  background-color: #170d2b !important;
-  border-color: rgba(168, 85, 247, 0.45) !important;
-}
-
-.dark [class*="from-emerald-50"],
-.dark [class*="from-emerald-100"] {
-  background-image: linear-gradient(to bottom right, rgba(6, 78, 59, 0.5), rgba(19, 78, 74, 0.4)) !important;
-  background-color: #03231d !important;
-  border-color: rgba(16, 185, 129, 0.45) !important;
-}
-
-.dark [class*="from-slate-50"] {
-  background-image: linear-gradient(to bottom, #0e1526, #162032) !important;
-  background-color: #0e1526 !important;
-  border-color: #243049 !important;
-}
-
-/* Highly Readable Font Contrast in Dark Mode */
+/* High Contrast Typography in Dark Mode */
 .dark .text-slate-950,
 .dark .text-slate-900,
 .dark .text-slate-800 {
-  color: #f8fafc !important; /* 100% white crisp contrast */
+  color: #F8FAFC !important;
 }
 
 .dark .text-slate-700 {
-  color: #f1f5f9 !important; /* 95% white contrast */
+  color: #E2E8F0 !important;
 }
 
 .dark .text-slate-600 {
-  color: #cbd5e1 !important; /* Crisp silver-white (WCAG AAA) */
+  color: #CBD5E1 !important;
 }
 
 .dark .text-slate-500 {
-  color: #94a3b8 !important; /* Legible Slate 400 (WCAG AA 6.5:1+) */
+  color: #94A3B8 !important;
 }
 
 .dark .text-slate-400 {
-  color: #94a3b8 !important;
+  color: #8CA0BE !important;
 }
 
-/* High Contrast Colored Typography in Dark Mode */
-.dark .text-rose-900,
-.dark .text-rose-800,
-.dark .text-rose-700,
-.dark .text-\[\#881337\] {
-  color: #fda4af !important; /* Bright soft rose */
-}
-
-.dark .text-emerald-950 {
-  color: #ffffff !important;
-}
-
-.dark .text-emerald-900,
-.dark .text-emerald-800,
-.dark .text-emerald-700 {
-  color: #6ee7b7 !important; /* Bright crisp mint/emerald */
-}
-
-.dark .text-emerald-600 {
-  color: #34d399 !important;
-}
-
-.dark .text-sky-950,
-.dark .text-sky-900,
-.dark .text-sky-800 {
-  color: #bae6fd !important; /* Crisp sky light blue */
-}
-
-.dark .text-sky-700,
-.dark .text-sky-600 {
-  color: #38bdf8 !important;
-}
-
-.dark .text-amber-900,
-.dark .text-amber-800,
-.dark .text-amber-700 {
-  color: #fde047 !important; /* Bright crisp gold */
-}
-
-.dark .text-amber-600 {
-  color: #facc15 !important;
-}
-
-.dark .text-blue-900,
-.dark .text-blue-800,
+/* Colored typography in dark mode */
+.dark .text-blue-600,
 .dark .text-blue-700 {
-  color: #93c5fd !important; /* Bright sky blue */
+  color: #23A8FF !important;
 }
 
-.dark .text-blue-600 {
-  color: #60a5fa !important;
+.dark .text-emerald-600,
+.dark .text-emerald-700 {
+  color: #34D399 !important;
 }
 
-.dark .text-indigo-900,
-.dark .text-indigo-800,
-.dark .text-indigo-700 {
-  color: #a5b4fc !important;
+.dark .text-amber-600,
+.dark .text-amber-700 {
+  color: #FCD34D !important;
 }
 
-.dark .text-purple-900,
-.dark .text-purple-800,
-.dark .text-purple-700 {
-  color: #d8b4fe !important;
-}
-
-/* Badges & Background Pills Contrast in Dark Mode */
-.dark .bg-emerald-50,
-.dark .bg-emerald-50\/40 {
-  background-color: rgba(6, 78, 59, 0.45) !important;
-  border-color: rgba(5, 150, 105, 0.4) !important;
-}
-
-.dark .bg-rose-50,
-.dark .bg-rose-100 {
-  background-color: rgba(136, 19, 55, 0.4) !important;
-  border-color: rgba(190, 18, 60, 0.4) !important;
-}
-
-.dark .bg-amber-50 {
-  background-color: rgba(120, 53, 15, 0.4) !important;
-  border-color: rgba(217, 119, 6, 0.4) !important;
-}
-
-.dark .bg-blue-50 {
-  background-color: rgba(30, 58, 138, 0.4) !important;
-  border-color: rgba(37, 99, 235, 0.4) !important;
-}
-
-.dark .bg-purple-50 {
-  background-color: rgba(88, 28, 135, 0.4) !important;
-  border-color: rgba(147, 51, 234, 0.4) !important;
-}
-
-.dark .bg-indigo-50 {
-  background-color: rgba(49, 46, 129, 0.4) !important;
-  border-color: rgba(79, 70, 229, 0.4) !important;
+.dark .text-rose-600,
+.dark .text-rose-700 {
+  color: #FF4DA6 !important;
 }
 
 .dark .divide-slate-100 > * + *,
 .dark .divide-slate-200 > * + * {
-  border-color: #1e293b !important;
+  border-color: #162E63 !important;
 }
 
 /* Inputs, Selects & Tables in Dark Mode */
@@ -299,64 +271,70 @@ button, input, select, textarea, [tabindex] {
 .dark input[type="date"],
 .dark select,
 .dark textarea {
-  background-color: #090e1a !important;
-  border-color: #334155 !important;
-  color: #f8fafc !important;
+  background-color: #071736 !important;
+  border-color: #1F3D7D !important;
+  color: #F8FAFC !important;
 }
 
 .dark input::placeholder,
 .dark textarea::placeholder {
-  color: #64748b !important;
+  color: #64748B !important;
 }
 
 .dark select option {
-  background-color: #0f172a !important;
-  color: #f8fafc !important;
+  background-color: #0B224F !important;
+  color: #F8FAFC !important;
 }
 
 .dark thead {
-  background-color: #080c16 !important;
-  color: #94a3b8 !important;
-  border-color: #1e293b !important;
+  background-color: #081B3E !important;
+  color: #8CA0BE !important;
+  border-color: #162E63 !important;
 }
 
 .dark tr:hover {
-  background-color: rgba(30, 41, 59, 0.45) !important;
+  background-color: rgba(29, 93, 255, 0.08) !important;
 }
 
 .dark .shadow-xs,
 .dark .shadow-2xs {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5) !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
 }
 
-/* Range slider styling */
+/* Range slider styling (PrintOS Blue) */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #881337;
+  background: #1D5DFF;
   cursor: pointer;
-  border: 2px solid #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(29, 93, 255, 0.4);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  background: #23A8FF;
 }
 
 input[type="range"]::-moz-range-thumb {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: #881337;
+  background: #1D5DFF;
   cursor: pointer;
-  border: 2px solid #ffffff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 1px 4px rgba(29, 93, 255, 0.4);
 }
 
 /* Print specifications */
 @media print {
   body {
-    background: #ffffff !important;
-    color: #000000 !important;
+    background: #FFFFFF !important;
+    color: #111827 !important;
   }
   aside, header, nav, button, .print\:hidden {
     display: none !important;
